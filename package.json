@@ -1,34 +1,25 @@
 {
   "name": "color-my-text",
-  "displayName": "Color My Text",
-  "description": "Set color schemes for files with customized formats",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "publisher": "JatinSanghvi",
   "engines": {
     "vscode": "^1.71.0"
   },
+  "license": "MIT",
+  "displayName": "Color My Text",
+  "description": "Set color schemes for files with custom formats",
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:color-my-text.helloWorld"
+  "keywords": [
+    "color",
+    "text"
   ],
+  "preview": true,
   "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "color-my-text.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
+  "activationEvents": [
+    "*"
+  ],
   "devDependencies": {
     "@types/vscode": "^1.71.0",
     "@types/glob": "^7.2.0",
@@ -41,5 +32,18 @@
     "mocha": "^10.0.0",
     "typescript": "^4.7.4",
     "@vscode/test-electron": "^2.1.5"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JatinSanghvi/color-my-text-vscode.git"
   }
 }

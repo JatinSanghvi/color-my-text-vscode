@@ -21,7 +21,7 @@
     "configuration": {
       "title": "Color My Text",
       "properties": {
-        "colorMyText.configuration": {
+        "colorMyText.configurations": {
           "description": "Specifies the color configuration.",
           "type": "array",
           "items": {
@@ -54,7 +54,7 @@
                         "green",
                         "magenta",
                         "red",
-                        "yellow"                        
+                        "yellow"
                       ]
                     },
                     "matchCase": {
@@ -93,18 +93,20 @@
   "activationEvents": [
     "*"
   ],
+  "dependencies": {
+    "minimatch": "^5.1.0"
+  },
   "devDependencies": {
-    "@types/vscode": "^1.71.0",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.71.0",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
     "eslint": "^8.20.0",
-    "glob": "^8.0.3",
     "mocha": "^10.0.0",
-    "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "typescript": "^4.7.4"
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

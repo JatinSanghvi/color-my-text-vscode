@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import * as minimatch from 'minimatch';
+import { Configuration } from './configuration';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "color-my-text" is activated.');
@@ -7,30 +9,61 @@ export function activate(context: vscode.ExtensionContext) {
 		color: new vscode.ThemeColor('terminal.ansiRed'),
 	});
 
-	let doneEditors: vscode.TextEditor[] = [];
 	let todoEditors: vscode.TextEditor[] = vscode.window.visibleTextEditors.slice();
-
-	const regExp = /Jatin/g;
+	let doneEditors: vscode.TextEditor[] = [];
 
 	function updateDecorations() {
+		if (todoEditors.length === 0) { return; }
+
+		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
+		if (!configurations) { return; }
+
 		todoEditors.forEach(todoEditor => {
+			const applicableConfigurations = configurations.filter(configuration =>
+				configuration.fileSelectors?.some(selector => {
+					const pathPattern = selector.includes('/') ? selector : '**/' + selector;
+					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pathPattern);
+				}));
+
+			if (applicableConfigurations.length === 0) { return; }
+
 			const text = todoEditor.document.getText();
-			let match: RegExpExecArray | null;
-			const ranges: vscode.Range[] = [];
 
-			while (match = regExp.exec(text)) {
-				const startPosition = todoEditor.document.positionAt(match.index);
-				const endPosition = todoEditor.document.positionAt(match.index + match[0].length);
-				ranges.push(new vscode.Range(startPosition, endPosition));
-			}
+			applicableConfigurations.forEach(configuration =>
+				configuration.settings?.forEach(setting => {
+					const ranges: vscode.Range[] = [];
 
-			console.log("Decorate:", todoEditor.document.fileName);
-			todoEditor.setDecorations(decorationType, ranges);
+					setting.patterns?.forEach(pattern => {
+						const regExp = new RegExp(pattern, 'g');
+						let match: RegExpExecArray | null;
+
+						while (match = regExp.exec(text)) {
+							const startPosition = todoEditor.document.positionAt(match.index);
+							const endPosition = todoEditor.document.positionAt(match.index + match[0].length);
+							ranges.push(new vscode.Range(startPosition, endPosition));
+						}
+					});
+
+					if (ranges.length !== 0) {
+						todoEditor.setDecorations(decorationType, ranges);
+					}
+				}));
+
 			doneEditors.push(todoEditor);
 		});
 
 		todoEditors = [];
 	}
+
+	vscode.workspace.onDidChangeConfiguration(
+		event => {
+			if (event.affectsConfiguration('colorMyText.configurations')) {
+				todoEditors = vscode.window.visibleTextEditors.slice();
+				doneEditors = [];
+			}
+		},
+		null,
+		context.subscriptions);
 
 	vscode.window.onDidChangeVisibleTextEditors(
 		visibleEditors => {

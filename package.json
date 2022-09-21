@@ -17,6 +17,79 @@
   ],
   "preview": true,
   "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Color My Text",
+      "properties": {
+        "colorMyText.configuration": {
+          "description": "Specifies the color configuration.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fileSelectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "settings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "patterns": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "color": {
+                      "type": "string",
+                      "enum": [
+                        "blue",
+                        "cyan",
+                        "green",
+                        "magenta",
+                        "red",
+                        "yellow"                        
+                      ]
+                    },
+                    "matchCase": {
+                      "type": "boolean"
+                    },
+                    "matchWholeWord": {
+                      "type": "boolean"
+                    },
+                    "bold": {
+                      "type": "boolean"
+                    },
+                    "italic": {
+                      "type": "boolean"
+                    },
+                    "underline": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "color",
+                    "patterns"
+                  ],
+                  "title": "Setting"
+                }
+              }
+            },
+            "required": [
+              "fileSelectors",
+              "settings"
+            ]
+          }
+        }
+      }
+    }
+  },
   "activationEvents": [
     "*"
   ],

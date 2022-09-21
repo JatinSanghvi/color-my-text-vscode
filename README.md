@@ -1,14 +1,12 @@
-# color-my-text README
+# Color My Text
 
-This is the README for your extension "color-my-text". After writing up a brief description, we recommend including the following sections.
+![color-my-text](/images/hero.png)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+The VS Code extension will let users specify regular expressions and it will color the text for them. This would help users add thematic colors for files of internal non-standard formats such as log files, without requiring them to create and register a VS Code extension that understands their file formats.
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
+Since the extension will allow regular expressions, user can choose to color just the words, group of words or entire line containing the word of their interest, such as highlighting critical/error log lines to make them distinguish from the rest of the text. Allowing only selection among theme colors will make highlighted text appear better aesthetically in both Light and Dark mode themes. At present, the plan is to put the color configuration in a separate JSON file that will apply color schemes to all matching files in the folder.
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
@@ -33,39 +31,6 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial draft release.

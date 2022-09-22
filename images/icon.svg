@@ -1,53 +1,23 @@
-<svg viewBox="0 0 4096 4096" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
   <rect x="0%" y="0%" width="100%" height="100%" fill="#25292e" />
   <g mask="url(#textMask)">
     <g>
-      <rect x="0%" y="00%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="04%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="08%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="12%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="16%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="20%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="24%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="28%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="32%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="36%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="40%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="44%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="48%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="52%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="56%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="60%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="64%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="68%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="72%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="76%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="80%" width="100%" height="2.5%" fill="#56b3b4" />
-      <rect x="0%" y="84%" width="100%" height="2.5%" fill="#ea5e5e" />
-      <rect x="0%" y="88%" width="100%" height="2.5%" fill="#f7ba3e" />
-      <rect x="0%" y="92%" width="100%" height="2.5%" fill="#bf85bf" />
-      <rect x="0%" y="96%" width="100%" height="2.5%" fill="#56b3b4" />
+      <rect x="0%" y="03%" width="100%" height="6%" fill="#bf85bf" />
+      <rect x="0%" y="11%" width="100%" height="6%" fill="#ea5e5e" />
+      <rect x="0%" y="19%" width="100%" height="6%" fill="#f7ba3e" />
+      <rect x="0%" y="27%" width="100%" height="6%" fill="#56b3b4" />
+      <rect x="0%" y="35%" width="100%" height="6%" fill="#bf85bf" />
+      <rect x="0%" y="43%" width="100%" height="6%" fill="#ea5e5e" />
+      <rect x="0%" y="51%" width="100%" height="6%" fill="#f7ba3e" />
+      <rect x="0%" y="59%" width="100%" height="6%" fill="#56b3b4" />
+      <rect x="0%" y="67%" width="100%" height="6%" fill="#bf85bf" />
+      <rect x="0%" y="75%" width="100%" height="6%" fill="#ea5e5e" />
+      <rect x="0%" y="83%" width="100%" height="6%" fill="#f7ba3e" />
+      <rect x="0%" y="91%" width="100%" height="6%" fill="#56b3b4" />
     </g>
     <mask id="textMask">
-      <!-- <text x="50%" y="50%" font-family="Eras ITC" font-size="4096" font-weight="bold" fill="white" dominant-baseline="central" text-anchor="middle">C</text> -->
-      <path glyph-name="C" transform="matrix(2 0 0 -2 672 3424)" fill="white" d="M1282 333q-12 -59 -29 -164.5t-23 -163.5q-214 -31 -382 -31q-162 0 -301.5 40.5t-256 133t-166.5 217.5t-50 280q0 181 67.5 325.5t194 241t277.5 138t312 41.5q148 0 366 -38l2 -84q2 -55 6 -121l7 -114q-117 28 -189.5 38t-134.5 10q-135 0 -243 -54t-170 -157 t-62 -228q0 -114 52 -195.5t140.5 -126t218.5 -44.5q71 0 154.5 11.5t209.5 44.5z"/>
+      <text x="50%" y="50%" font-family="Eras ITC" font-size="1" font-weight="bold" fill="white"
+        dominant-baseline="central" text-anchor="middle">C</text>
     </mask>
   </g>
 </svg>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

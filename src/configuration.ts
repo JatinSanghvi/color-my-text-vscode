@@ -1,14 +1,16 @@
 export type Configuration = {
-    fileSelectors: string[],
-    settings: {
-        patterns: string[],
-        color: Color,
-        matchCase: boolean,
-        matchWholeWord: boolean,
-        bold: boolean,
-        italic: boolean,
-        underline: boolean,
-    }[],
+    fileSelectors?: string[],
+    settings?: Setting[],
+};
+
+export type Setting = {
+    patterns?: string[];
+    color?: Color;
+    matchCase?: boolean;
+    matchWholeWord?: boolean;
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
 };
 
 export enum Color {

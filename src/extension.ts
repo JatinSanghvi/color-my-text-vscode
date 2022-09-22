@@ -1,22 +1,39 @@
 import * as vscode from 'vscode';
 import * as minimatch from 'minimatch';
-import { Configuration } from './configuration';
+import { Configuration, Setting } from './configuration';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "color-my-text" is activated.');
 
-	const decorationType = vscode.window.createTextEditorDecorationType({
-		color: new vscode.ThemeColor('terminal.ansiRed'),
-	});
+	let todoEditors: vscode.TextEditor[];
+	let doneEditors: vscode.TextEditor[];
+	let decorationTypeMap: Map<Setting, vscode.TextEditorDecorationType> = new Map();
 
-	let todoEditors: vscode.TextEditor[] = vscode.window.visibleTextEditors.slice();
-	let doneEditors: vscode.TextEditor[] = [];
+	function resetDecorations(): void {
+		todoEditors = vscode.window.visibleTextEditors.slice();
+		doneEditors = [];
 
-	function updateDecorations() {
+		// Clear all applied decorations.
+		todoEditors.forEach(todoEditor =>
+			decorationTypeMap.forEach(decorationType =>
+				todoEditor.setDecorations(decorationType, [])));
+
+		decorationTypeMap = new Map();
+		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
+		configurations?.forEach(configuration =>
+			configuration.settings?.forEach(setting =>
+				decorationTypeMap.set(
+					setting,
+					vscode.window.createTextEditorDecorationType({
+						color: new vscode.ThemeColor('terminal.ansiRed'),
+					}))));
+	}
+
+	function updateDecorations(): void {
 		if (todoEditors.length === 0) { return; }
 
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-		if (!configurations) { return; }
+		if (configurations === undefined) { return; }
 
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
@@ -45,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
 					});
 
 					if (ranges.length !== 0) {
-						todoEditor.setDecorations(decorationType, ranges);
+						todoEditor.setDecorations(decorationTypeMap.get(setting)!, ranges);
 					}
 				}));
 
@@ -58,8 +75,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidChangeConfiguration(
 		event => {
 			if (event.affectsConfiguration('colorMyText.configurations')) {
-				todoEditors = vscode.window.visibleTextEditors.slice();
-				doneEditors = [];
+				resetDecorations();
 			}
 		},
 		null,
@@ -86,5 +102,6 @@ export function activate(context: vscode.ExtensionContext) {
 		null,
 		context.subscriptions);
 
+	resetDecorations();
 	setInterval(updateDecorations, 500);
 }

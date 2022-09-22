@@ -55,8 +55,12 @@ export function activate(context: vscode.ExtensionContext): void {
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
 		configurations?.forEach(configuration =>
 			configuration.settings?.forEach(setting => {
-				const renderOptions: vscode.DecorationRenderOptions = {};
-				if (setting.color !== undefined) { renderOptions.color = themeColors[setting.color]; }
+				const renderOptions: vscode.DecorationRenderOptions = {
+					color: setting.color === undefined ? undefined : themeColors[setting.color],
+					fontWeight: setting.bold === undefined ? undefined : setting.bold ? 'bold' : 'normal',
+					fontStyle: setting.italic === undefined ? undefined : setting.italic ? 'italic' : 'normal',
+					textDecoration: setting.underline === undefined ? undefined : setting.underline ? 'underline' : 'none',
+				};
 
 				decorationTypeMap.set(setting, vscode.window.createTextEditorDecorationType(renderOptions));
 			}));
@@ -71,6 +75,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
 				configuration.fileSelectors?.some(selector => {
+					// Support matches by filenames and relative file paths.
 					const pathPattern = selector.includes('/') ? selector : '**/' + selector;
 					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pathPattern);
 				}));
@@ -84,7 +89,7 @@ export function activate(context: vscode.ExtensionContext): void {
 					const ranges: vscode.Range[] = [];
 
 					setting.patterns?.forEach(pattern => {
-						const regExp = new RegExp(pattern, 'g');
+						const regExp = new RegExp(pattern, setting.matchCase ?'g' : 'gi');
 						let match: RegExpExecArray | null;
 
 						while (match = regExp.exec(text)) {

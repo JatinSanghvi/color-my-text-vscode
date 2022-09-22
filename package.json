@@ -60,9 +60,6 @@
                     "matchCase": {
                       "type": "boolean"
                     },
-                    "matchWholeWord": {
-                      "type": "boolean"
-                    },
                     "bold": {
                       "type": "boolean"
                     },
@@ -74,8 +71,29 @@
                     }
                   },
                   "required": [
-                    "color",
                     "patterns"
+                  ],
+                  "anyOf": [
+                    {
+                      "required": [
+                        "color"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "bold"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "italic"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "underline"
+                      ]
+                    }
                   ],
                   "title": "Setting"
                 }

@@ -1,9 +1,41 @@
 import * as vscode from 'vscode';
 import * as minimatch from 'minimatch';
-import { Configuration, Setting } from './configuration';
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
 	console.log('Extension "color-my-text" is activated.');
+
+	type Configuration = {
+		fileSelectors?: string[],
+		settings?: Setting[],
+	};
+
+	type Setting = {
+		patterns?: string[];
+		color?: Color;
+		matchCase?: boolean;
+		matchWholeWord?: boolean;
+		bold?: boolean;
+		italic?: boolean;
+		underline?: boolean;
+	};
+
+	enum Color {
+		blue = 'blue',
+		cyan = 'cyan',
+		green = 'green',
+		magenta = 'magenta',
+		red = 'red',
+		yellow = 'yellow',
+	}
+
+	const themeColors: Record<Color, vscode.ThemeColor> = {
+		[Color.blue]: new vscode.ThemeColor('terminal.ansiBlue'),
+		[Color.cyan]: new vscode.ThemeColor('terminal.ansiCyan'),
+		[Color.green]: new vscode.ThemeColor('terminal.ansiGreen'),
+		[Color.magenta]: new vscode.ThemeColor('terminal.ansiMagenta'),
+		[Color.red]: new vscode.ThemeColor('terminal.ansiRed'),
+		[Color.yellow]: new vscode.ThemeColor('terminal.ansiYellow'),
+	};
 
 	let todoEditors: vscode.TextEditor[];
 	let doneEditors: vscode.TextEditor[];
@@ -13,20 +45,21 @@ export function activate(context: vscode.ExtensionContext) {
 		todoEditors = vscode.window.visibleTextEditors.slice();
 		doneEditors = [];
 
-		// Clear all applied decorations.
+		// Clear all decorations.
 		todoEditors.forEach(todoEditor =>
 			decorationTypeMap.forEach(decorationType =>
 				todoEditor.setDecorations(decorationType, [])));
 
+		// Refresh decoration-type map.
 		decorationTypeMap = new Map();
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
 		configurations?.forEach(configuration =>
-			configuration.settings?.forEach(setting =>
-				decorationTypeMap.set(
-					setting,
-					vscode.window.createTextEditorDecorationType({
-						color: new vscode.ThemeColor('terminal.ansiRed'),
-					}))));
+			configuration.settings?.forEach(setting => {
+				const renderOptions: vscode.DecorationRenderOptions = {};
+				if (setting.color !== undefined) { renderOptions.color = themeColors[setting.color]; }
+
+				decorationTypeMap.set(setting, vscode.window.createTextEditorDecorationType(renderOptions));
+			}));
 	}
 
 	function updateDecorations(): void {

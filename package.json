@@ -94,6 +94,7 @@
     "*"
   ],
   "dependencies": {
+    "glob": "^8.0.3",
     "minimatch": "^5.1.0"
   },
   "devDependencies": {

@@ -49,12 +49,22 @@
                     "color": {
                       "type": "string",
                       "enum": [
-                        "blue",
-                        "cyan",
-                        "green",
-                        "magenta",
-                        "red",
-                        "yellow"
+                        "Black",
+                        "Blue",
+                        "BrightBlack",
+                        "BrightBlue",
+                        "BrightCyan",
+                        "BrightGreen",
+                        "BrightMagenta",
+                        "BrightRed",
+                        "BrightWhite",
+                        "BrightYellow",
+                        "Cyan",
+                        "Green",
+                        "Magenta",
+                        "Red",
+                        "White",
+                        "Yellow"
                       ]
                     },
                     "matchCase": {

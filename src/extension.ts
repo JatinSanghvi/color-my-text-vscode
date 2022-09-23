@@ -21,22 +21,23 @@ export function activate(context: vscode.ExtensionContext): void {
 	};
 
 	enum Color {
-		blue = 'blue',
-		cyan = 'cyan',
-		green = 'green',
-		magenta = 'magenta',
-		red = 'red',
-		yellow = 'yellow',
+		black = 'Black',
+		blue = 'Blue',
+		brightBlack = 'BrightBlack',
+		brightBlue = 'BrightBlue',
+		brightCyan = 'BrightCyan',
+		brightGreen = 'BrightGreen',
+		brightMagenta = 'BrightMagenta',
+		brightRed = 'BrightRed',
+		brightWhite = 'BrightWhite',
+		brightYellow = 'BrightYellow',
+		cyan = 'Cyan',
+		green = 'Green',
+		magenta = 'Magenta',
+		red = 'Red',
+		white = 'White',
+		yellow = 'Yellow',
 	}
-
-	const themeColors: Record<Color, vscode.ThemeColor> = {
-		[Color.blue]: new vscode.ThemeColor('terminal.ansiBlue'),
-		[Color.cyan]: new vscode.ThemeColor('terminal.ansiCyan'),
-		[Color.green]: new vscode.ThemeColor('terminal.ansiGreen'),
-		[Color.magenta]: new vscode.ThemeColor('terminal.ansiMagenta'),
-		[Color.red]: new vscode.ThemeColor('terminal.ansiRed'),
-		[Color.yellow]: new vscode.ThemeColor('terminal.ansiYellow'),
-	};
 
 	let todoEditors: vscode.TextEditor[];
 	let doneEditors: vscode.TextEditor[];
@@ -56,9 +57,9 @@ export function activate(context: vscode.ExtensionContext): void {
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
 		configurations?.forEach(configuration =>
 			configuration.settings?.forEach(setting => {
-				
+
 				const renderOptions: vscode.DecorationRenderOptions = {
-					color: setting.color === undefined ? undefined : themeColors[setting.color],
+					color: !Object.values(Color).includes(setting.color!) ? undefined : new vscode.ThemeColor('terminal.ansi' + setting.color),
 					fontWeight: setting.bold === undefined ? undefined : setting.bold ? 'bold' : 'normal',
 					fontStyle: setting.italic === undefined ? undefined : setting.italic ? 'italic' : 'normal',
 					textDecoration:
@@ -98,7 +99,7 @@ export function activate(context: vscode.ExtensionContext): void {
 					const ranges: vscode.Range[] = [];
 
 					setting.patterns?.forEach(pattern => {
-						const regExp = new RegExp(pattern, setting.matchCase ?'g' : 'gi');
+						const regExp = new RegExp(pattern, setting.matchCase ? 'g' : 'gi');
 						let match: RegExpExecArray | null;
 
 						while (match = regExp.exec(text)) {

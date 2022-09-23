@@ -28,13 +28,13 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "fileSelectors": {
+              "paths": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "settings": {
+              "rules": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -118,8 +118,8 @@
               }
             },
             "required": [
-              "fileSelectors",
-              "settings"
+              "paths",
+              "rules"
             ]
           }
         }

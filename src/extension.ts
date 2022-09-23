@@ -5,11 +5,11 @@ export function activate(context: vscode.ExtensionContext): void {
 	console.log('Extension "color-my-text" is activated.');
 
 	type Configuration = {
-		fileSelectors?: string[],
-		settings?: Setting[],
+		paths?: string[],
+		rules?: Rule[],
 	};
 
-	type Setting = {
+	type Rule = {
 		patterns?: string[];
 		color?: Color;
 		matchCase?: boolean;
@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	let todoEditors: vscode.TextEditor[];
 	let doneEditors: vscode.TextEditor[];
-	let decorationTypeMap: Map<Setting, vscode.TextEditorDecorationType> = new Map();
+	let decorationTypeMap: Map<Rule, vscode.TextEditorDecorationType> = new Map();
 
 	function resetDecorations(): void {
 		todoEditors = vscode.window.visibleTextEditors.slice();
@@ -56,21 +56,21 @@ export function activate(context: vscode.ExtensionContext): void {
 		decorationTypeMap = new Map();
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
 		configurations?.forEach(configuration =>
-			configuration.settings?.forEach(setting => {
+			configuration.rules?.forEach(rule => {
 
 				const renderOptions: vscode.DecorationRenderOptions = {
-					color: !Object.values(Color).includes(setting.color!) ? undefined : new vscode.ThemeColor('terminal.ansi' + setting.color),
-					fontWeight: setting.bold === undefined ? undefined : setting.bold ? 'bold' : 'normal',
-					fontStyle: setting.italic === undefined ? undefined : setting.italic ? 'italic' : 'normal',
+					color: !Object.values(Color).includes(rule.color!) ? undefined : new vscode.ThemeColor('terminal.ansi' + rule.color),
+					fontWeight: rule.bold === undefined ? undefined : rule.bold ? 'bold' : 'normal',
+					fontStyle: rule.italic === undefined ? undefined : rule.italic ? 'italic' : 'normal',
 					textDecoration:
-						setting.underline === true && setting.strikeThrough === true ? 'underline line-through'
-						: setting.underline === true ? 'underline'
-						: setting.strikeThrough === true ? 'line-through'
-						: setting.underline === false || setting.strikeThrough === false ? 'none'
+						rule.underline === true && rule.strikeThrough === true ? 'underline line-through'
+						: rule.underline === true ? 'underline'
+						: rule.strikeThrough === true ? 'line-through'
+						: rule.underline === false || rule.strikeThrough === false ? 'none'
 						: undefined,
 				};
 
-				decorationTypeMap.set(setting, vscode.window.createTextEditorDecorationType(renderOptions));
+				decorationTypeMap.set(rule, vscode.window.createTextEditorDecorationType(renderOptions));
 			}));
 	}
 
@@ -83,10 +83,10 @@ export function activate(context: vscode.ExtensionContext): void {
 
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
-				configuration.fileSelectors?.some(selector => {
+				configuration.paths?.some(path => {
 
 					// Support matches by filenames and relative file paths.
-					const pathPattern = selector.includes('/') ? selector : '**/' + selector;
+					const pathPattern = path.includes('/') ? path : '**/' + path;
 					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pathPattern);
 				}));
 
@@ -95,11 +95,11 @@ export function activate(context: vscode.ExtensionContext): void {
 			const text = todoEditor.document.getText();
 
 			applicableConfigurations.forEach(configuration =>
-				configuration.settings?.forEach(setting => {
+				configuration.rules?.forEach(rule => {
 					const ranges: vscode.Range[] = [];
 
-					setting.patterns?.forEach(pattern => {
-						const regExp = new RegExp(pattern, setting.matchCase ? 'g' : 'gi');
+					rule.patterns?.forEach(pattern => {
+						const regExp = new RegExp(pattern, rule.matchCase ? 'g' : 'gi');
 						let match: RegExpExecArray | null;
 
 						while (match = regExp.exec(text)) {
@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext): void {
 					});
 
 					if (ranges.length !== 0) {
-						todoEditor.setDecorations(decorationTypeMap.get(setting)!, ranges);
+						todoEditor.setDecorations(decorationTypeMap.get(rule)!, ranges);
 					}
 				}));
 

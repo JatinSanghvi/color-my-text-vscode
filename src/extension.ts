@@ -17,6 +17,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		bold?: boolean;
 		italic?: boolean;
 		underline?: boolean;
+		strikeThrough?: boolean;
 	};
 
 	enum Color {
@@ -55,11 +56,17 @@ export function activate(context: vscode.ExtensionContext): void {
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
 		configurations?.forEach(configuration =>
 			configuration.settings?.forEach(setting => {
+				
 				const renderOptions: vscode.DecorationRenderOptions = {
 					color: setting.color === undefined ? undefined : themeColors[setting.color],
 					fontWeight: setting.bold === undefined ? undefined : setting.bold ? 'bold' : 'normal',
 					fontStyle: setting.italic === undefined ? undefined : setting.italic ? 'italic' : 'normal',
-					textDecoration: setting.underline === undefined ? undefined : setting.underline ? 'underline' : 'none',
+					textDecoration:
+						setting.underline === true && setting.strikeThrough === true ? 'underline line-through'
+						: setting.underline === true ? 'underline'
+						: setting.strikeThrough === true ? 'line-through'
+						: setting.underline === false || setting.strikeThrough === false ? 'none'
+						: undefined,
 				};
 
 				decorationTypeMap.set(setting, vscode.window.createTextEditorDecorationType(renderOptions));
@@ -67,6 +74,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	}
 
 	function updateDecorations(): void {
+		if (decorationTypeMap.size === 0) { return; }
 		if (todoEditors.length === 0) { return; }
 
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
@@ -75,6 +83,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
 				configuration.fileSelectors?.some(selector => {
+
 					// Support matches by filenames and relative file paths.
 					const pathPattern = selector.includes('/') ? selector : '**/' + selector;
 					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pathPattern);

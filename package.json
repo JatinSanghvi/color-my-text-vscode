@@ -68,6 +68,9 @@
                     },
                     "underline": {
                       "type": "boolean"
+                    },
+                    "strikeThrough": {
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -92,6 +95,11 @@
                     {
                       "required": [
                         "underline"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "strikeThrough"
                       ]
                     }
                   ],

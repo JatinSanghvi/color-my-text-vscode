@@ -22,13 +22,14 @@
       "title": "Color My Text",
       "properties": {
         "colorMyText.configurations": {
-          "description": "Specifies the color configuration.",
+          "description": "Specifies the color and style configuration.",
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "paths": {
+                "markdownDescription": "Specifies the list of file path patterns e.g. `[\"*.log\", \"todos/**/*.todo\"]`.",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -36,17 +37,24 @@
               },
               "rules": {
                 "type": "array",
+                "description": "Specifies the list of text decoration rules.",
                 "items": {
                   "type": "object",
                   "additionalProperties": false,
                   "properties": {
                     "patterns": {
+                      "markdownDescription": "Specifies the list of regular expressions for matching the text e.g. `[\"Critical .*\", \"Error .*\"]`.",
                       "type": "array",
                       "items": {
                         "type": "string"
                       }
                     },
+                    "matchCase": {
+                      "description": "Specifies whether to perform case-sensitive match.",
+                      "type": "boolean"
+                    },
                     "color": {
+                      "markdownDescription": "Specifies the terminal ANSI color. _Do not specify to retain original text color._",
                       "type": "string",
                       "enum": [
                         "Black",
@@ -67,19 +75,20 @@
                         "Yellow"
                       ]
                     },
-                    "matchCase": {
-                      "type": "boolean"
-                    },
                     "bold": {
+                      "markdownDescription": "Specifies whether to **bold** or unbold text. _Do not specify to retain original font weights._",
                       "type": "boolean"
                     },
                     "italic": {
+                      "markdownDescription": "Specifies whether to _italicize_ or unitalicize text. _Do not specify to retain original font style._",
                       "type": "boolean"
                     },
                     "underline": {
+                      "markdownDescription": "Specifies whether to add or remove underline from text. _Do not specify to retain original text decoration._",
                       "type": "boolean"
                     },
                     "strikeThrough": {
+                      "markdownDescription": "Specifies whether to add or remove ~~strike through~~ from text. _Do not specify to retain original text decoration._",
                       "type": "boolean"
                     }
                   },

@@ -2,35 +2,169 @@
 
 ![color-my-text](/images/hero.png)
 
+## Introduction
+
+**Color My Text** extension enables you to configure custom text-decoration rules for files, such as log files or personal to-do lists, which do not adhere to any well-known syntax. Since the decoration rules are stored in the workspace settings, they can be shared along with the rest of the files to be decorated. Hence, you can imagine that when you are sharing files of custom formats with other users, you are also supplementing those files with information on how those should be decorated. Isn't that amazing?
+
+Still confused? Clone [this repository](https://github.com/JatinSanghvi/color-my-text-vscode) and open the `example` folder inside Visual Studio Code. Make sure that you install the 'Color My Text' extension which should be recommended to you after the folder is opened.
+
 ## Features
 
-The VS Code extension will let users specify regular expressions and it will color the text for them. This would help users add thematic colors for files of internal non-standard formats such as log files, without requiring them to create and register a VS Code extension that understands their file formats.
+### Fully Configurable
 
-Since the extension will allow regular expressions, user can choose to color just the words, group of words or entire line containing the word of their interest, such as highlighting critical/error log lines to make them distinguish from the rest of the text. Allowing only selection among theme colors will make highlighted text appear better aesthetically in both Light and Dark mode themes. At present, the plan is to put the color configuration in a separate JSON file that will apply color schemes to all matching files in the folder.
+#### Example Workspace Setting
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```jsonc
+"colorMyText.configurations": [
+    // Multiple configurations.
+    {
+        // Multiple paths.
+        "paths": ["*.md", "todos/**/todo.txt"],
+        "rules": [
+            // Multiple rules.
+            { "patterns": [".* - done"],  "strikeThrough": true },
+            { "patterns": [".* - doing"], "bold": true, "underline": true },
+            { "patterns": [".* - todo"],  "italic": true }
+        ]
+    },
+    {
+        "paths": ["C:/Log Files/*.log"],
+        "rules": [
+            // Multiple text patterns.
+            { "patterns": ["Critical", "Error"], "matchCase": true, "color": "BrightRed" },
+            { "patterns": ["Warning"],           "matchCase": true, "color": "Yellow" }
+        ]
+    }
+]
+```
 
-## Requirements
+#### Specify files, file types, folders, or any combination of them
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+You can specify multiple paths with `paths` property to apply a common set of rules on all of them. In the example setting above, the lines ending with `- done` will be struck out in all of the Markdown files and all files named `todo.txt` inside folder `todos` or one of its subfolders.
 
-## Extension Settings
+- Most of the [glob-style](https://github.com/isaacs/node-glob#glob-primer) patterns as you may have used in `.gitignore` file are supported.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- The path patterns can either be absolute paths or relative to the workspace folder path.
 
-For example:
+- All paths should be  delimited by forward-slashes irrespective of the host operating system.
 
-This extension contributes the following settings:
+- It does not make sense to use absolute paths in workspace settings. You may want to store such configurations inside the user settings for your personal use.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+#### Specify list of rules for each set of files
+
+You can specify multiple rules with `rules` property for each set of paths. In the example setting above, the lines ending with `- doing` will be set to bold and underlined, and the lines ending with `- todo` will be italicized for the log files inside folder `C:\Log Files`.
+
+#### Specify list of regular expression patterns to match the text
+
+You can specify multiple regular expression patterns with `patterns` property for each rule. Text matching any of the regular expressions will have that rule applied. In the example setting above, both words `Critical` and `Error` will be colored with bright red color. _Note that these are not wildcard patterns, so a pattern such as `"Create*Async"` will not work as expected. Instead, you would want to set the pattern as `"Create\\w*Async"`._
+
+#### Specify whether to perform case-sensitive matches
+
+You can specify whether to perform case-sensitive matches of text with the regular expressions with the `matchCase` property. If the property is not specified, the extension will perform case-insensitive matches. In the example setting above, all rules for paths `*.md` and `todos/**/todo.txt` will be applied case-insensitively while the rules for path `C:\Log Files\*.log` will be applied case-sensitively.
+
+### Numerous Color and Style Combinations
+
+You can set any of the color and style combinations for each of the rules.
+
+#### `color`
+
+You can choose one of the sixteen colors as listed in the [Integrated Terminal colors](https://code.visualstudio.com/api/references/theme-color#integrated-terminal-colors) section without `terminal.ansi` prefixed. These colors are `Black`, `Blue`, `BrightBlack`, `BrightBlue`, `BrightCyan`, `BrightGreen`, `BrightMagenta`, `BrightRed`, `BrightWhite`, `BrightYellow`, `Cyan`, `Green`, `Magenta`, `Red`, `White`, and `Yellow`.
+
+By providing a limited set of color options, we can ensure the colored text will mix well with the rest of the text irrespective of the color theme selected by the user. Most of the standard Visual Studio Code color themes will choose the colors for the text that will contrast well with the editor background. And it prevents you from fixing all colors in the settings if you ever want to switch between Light and Dark colored themes. It also removes the requirement for two users sharing the rules to have the same color theme set in their respective editors. In short, the text colors will get updated automatically to match with the color themes.
+
+#### `bold`
+
+You can set the value of this property to `true` to **bold** the text, to `false` to un-bold the text (if the color them had bolded it), or do not set it to retain the original font weight.
+
+#### `italic`
+
+You can set the value of this property to `true` to _italicize_ the text, to `false` to un-italicize the text (if the color them had italicized it), or do not set it to retain the original font style.
+
+#### `underline`
+
+You can set the value of this property to `true` to underline the text, to `false` to un-underline the text (if the color them had underlined it), or do not set it to retain the original text decoration.
+
+#### `strikeThrough`
+
+You can set the value of this property to `true` to ~~strike out~~ the text, to `false` to un-strike the text (if the color them had struck it), or do not set it to retain the original text decoration.
+
+#### Useful Information
+
+- All of the above text decoration properties are optional but you should specify at least one property under each rule.
+
+- Your text-decorations will be applied on top of the existing color theme as set by the user. So for instance, if some text is already colored by virtue of the color theme, if your rule does not specify the value of `color` property but has value of property `italic` set to `true`, the text color will stay same as dictated by the color theme but the text will get italicized in addition.
+
+- It is possible that the document that is opened matches path patterns across multiple configurations. In that case, all of the configurations will apply. For example, if you have one set of rules for path pattern `*` and another set of rules for path pattern `*.md`, then your Markdown file will have both sets of rules applied.
+
+- Similarly, if your text matches multiple rules with different sets of text-decorations, a merged text-decoration based on all those qualified rules will get applied to the text. As an example, say if your configuration looks like below:
+
+    ```json
+    "rules": [
+        { "patterns": ["brown fox jumps"], "bold": true },
+        { "patterns": ["fox jumps over"], "strikeThrough": true }
+        { "patterns": ["jumps over the"], "italic": true },
+    ]
+    ```
+
+    Then, your text will look like:
+
+    <pre>The quick <b>brown <strike>fox <i>jumps</b> over</strike> the</i> lazy dog.</pre>
+
+- If the same text matches multiple conflicting rules, such as if the value of property `color` is set to different values inside different rules, then the very first rule in the sequence will win and will be applied to the matching text.
+
+### Apply Text Decorations as You Type
+
+All text decorations will be applied as you type. There is no need to reopen the documents to reapply text decorations. It does not matter if the document is split over multiple windows. It just works.
+
+For creating your text decoration rules, I would suggest to have the file to be decorated opened on one side of the editor and the setting file opened on the other side. This way you can see the configuration applied live on the file as you change them. This can help you quickly find issues and experiment with different styles to devise a set of rules that offers you the best appearance.
+
+### Share and Collaborate Over Text Decorations
+
+When sharing the files of internal custom formats with others, you can also share the workspace settings (file `.vscode/settings.json`) along with the files and make the text decoration rules available to them. If you share your files via a Git repo, you can now also accept the fixes and contributions to the text decoration rules from other users.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+All the below are minor issues and in most cases, should not affect your experience. These are all results of various platform limitations.
+
+- Text decorations do not show in the minimap. As an example, if you color all lines in a log file with text `Failed` with red color, you will not be able to see those red lines in the minimap. You will need to scroll through the document to find them. This is due to limitation with Visual Studio Code. They need to keep it performant.
+
+- If the text matches multiple rules, one of them has property `underline` set to either `true` or `false` and the other one has `strikeThrough` set to either `true` or `false`, only the first rule in the sequence of configurations will be applied. This is due to how CSS works and making the behavior any different would have created further confusion when these decorations are applied on top of the text rendered by the color theme. Anyway, why would you want to underline and strike out the text at the same time? :)
+
+- While adding the configuration inside user or workspace settings, before you add any of the text decoration properties, Visual Studio Code would show JSON schema validation error `Missing Property "color".` This is because it is not able to correctly handle some of the advanced JSON schema attributes. This is possibly a design choice than a bug. Just ignore the message. Once you add any property (e.g. `bold`), the schema validation error will correctly disappear.
+
+- It was thought to add support for having one pattern for matching the text, and another pattern for applying the decorations. For example, if someone sets the text pattern with a capture-group such as `(\\w+) - done`, just the text matching the capture group i.e. `Shopping` out of `Shopping - done` would be decorated. However, Node.js does not have support for locating indices of each capture group.  See row for `hasIndices` flag inside [Browser compatibility chart](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#browser_compatibility). This is required by extension for locating the text positions. This feature will be added to the extension once Node.js gets support for `hasIndices` flag.
+
+## Requirements
+
+- Visual Studio Code 1.71.0 or later.
 
 ## Release Notes
 
-### 0.1.0
+### 1.0.0
 
-Initial draft release.
+- Implement all planned  features.
+
+## Meta Section
+
+### Background
+
+This extension was developed as part of [Microsoft Hackathon 2022](https://news.microsoft.com/life/hackathon/) project. A week before the Hackathon week, I was looking to color lines where shared variables are accessed inside a C# file to visibly ensure there are no concurrency issues present inside the code. I could not find a great extension that fulfilled my requirements, hence came up with the idea to build an extension by myself. I hope there will be more use cases enabled through with this one and it will serve many people and teams.
+
+### Non-Goals
+
+Some of these non-goals were set considering my little experience working on JavaScript and TypeScript, and the short time I had to work on the extension. But now the project is nearing completion, I think all of these were right choices. I do not intend to convert any of these non-goals into goals at the time of this writing.
+
+- Adding support for hierarchical configuration similar to `.editorconfig` file.
+- Adding support for wildcard text patterns like `a???b` or simply plain text search.
+- Adding support to 'Match Whole Word'. Regex patterns should be sufficient to meet this requirement.
+- Providing functionality through commands and with keyboard shortcuts.
+- Adding GUI experience. I believe all developers would prefer setting file over UI.
+- Decomposing functionality into several TypeScript classes and/or modules.
+- Writing unit and integration tests.
+- Giving special treatment to the setting file. For example, coloring the JSON-text for each rule with the decoration mentioned in that rule.
+
+### Scope for Improvements
+
+- Improve the performance. It is already fast. You should be able to find large files decorated in a jiffy, but the performance is dependent on the size of document. At the moment, the extension re-decorates the entire document as and when user types some text, but it should be possible to decorate just the visible portion of the text to make the performance independent of file sizes. I dropped this plan before as I thought that user would anyway like to see all the lines in the document decorated inside the minimap. But since Visual Studio Code does not render these decorations inside the minimap, that is no longer a consideration. Of course, having this kind of optimization would require support from Visual Studio Code to let the extension know when user is scrolling the document up and down, and when user resizes the text editor window vertically. I worry that when user is rapidly scrolling through the document, the new behavior will provide an inferior experience.
+
+- Once Node.js adds support for `hasIndices` flag, I would like to add support for decorating partial text out of the full text that matches with the patterns.

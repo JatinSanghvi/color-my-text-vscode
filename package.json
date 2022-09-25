@@ -7,13 +7,18 @@
   },
   "license": "MIT",
   "displayName": "Color My Text",
-  "description": "Set color schemes for files with custom formats",
+  "description": "Create aesthetically pleasing and shareable color and style schemes quickly for your files with custom formats.",
   "categories": [
     "Other"
   ],
   "keywords": [
+    "bold",
     "color",
-    "text"
+    "decorate",
+    "italic",
+    "style",
+    "text",
+    "underline"
   ],
   "preview": true,
   "main": "./out/extension.js",

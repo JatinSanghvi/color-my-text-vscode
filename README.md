@@ -136,7 +136,7 @@ All the below are minor issues and in most cases, should not affect your experie
 
 ## Requirements
 
-- Visual Studio Code 1.71.0 or later.
+- Visual Studio Code January 2021 Update (version 1.53) or later.
 
 ## Release Notes
 

@@ -84,10 +84,10 @@ export function activate(context: vscode.ExtensionContext): void {
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
 				configuration.paths?.some(path => {
-
 					// Support matches by filenames and relative file paths.
-					const pathPattern = path.includes('/') ? path : '**/' + path;
-					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pathPattern);
+					const pattern = path.includes('/') || path.includes('\\') ? path : '**/' + path;
+					const options: minimatch.IOptions = { nocase: process.platform === 'win32' };
+					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pattern, options);
 				}));
 
 			if (applicableConfigurations.length === 0) { return; }
@@ -100,9 +100,9 @@ export function activate(context: vscode.ExtensionContext): void {
 
 					rule.patterns?.forEach(pattern => {
 						const regExp = new RegExp(pattern, rule.matchCase ? 'g' : 'gi');
-						let match: RegExpExecArray | null;
 
-						while (match = regExp.exec(text)) {
+						for (const match of text.matchAll(regExp)) {
+							if (match.index === undefined || match[0].length === 0) { continue; }
 							const startPosition = todoEditor.document.positionAt(match.index);
 							const endPosition = todoEditor.document.positionAt(match.index + match[0].length);
 							ranges.push(new vscode.Range(startPosition, endPosition));

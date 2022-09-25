@@ -1,6 +1,6 @@
 {
   "name": "color-my-text",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "JatinSanghvi",
   "engines": {
     "vscode": "^1.53.0"
@@ -20,7 +20,6 @@
     "text",
     "underline"
   ],
-  "preview": true,
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {

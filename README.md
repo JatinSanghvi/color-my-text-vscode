@@ -46,7 +46,7 @@ You can specify multiple paths with `paths` property to apply a common set of ru
 
 - The path patterns can either be absolute paths or relative to the workspace folder path.
 
-- All paths should be  delimited by forward-slashes irrespective of the host operating system.
+- All paths should be delimited by forward-slashes irrespective of the host operating system.
 
 - It does not make sense to use absolute paths in workspace settings. You may want to store such configurations inside the user settings for your personal use.
 
@@ -132,7 +132,7 @@ All the below are minor issues and in most cases, should not affect your experie
 
 - While adding the configuration inside user or workspace settings, before you add any of the text decoration properties, Visual Studio Code would show JSON schema validation error `Missing Property "color".` This is because it is not able to correctly handle some of the advanced JSON schema attributes. This is possibly a design choice than a bug. Just ignore the message. Once you add any property (e.g. `bold`), the schema validation error will correctly disappear.
 
-- It was thought to add support for having one pattern for matching the text, and another pattern for applying the decorations. For example, if someone sets the text pattern with a capture-group such as `(\\w+) - done`, just the text matching the capture group i.e. `Shopping` out of `Shopping - done` would be decorated. However, Node.js does not have support for locating indices of each capture group.  See row for `hasIndices` flag inside [Browser compatibility chart](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#browser_compatibility). This is required by extension for locating the text positions. This feature will be added to the extension once Node.js gets support for `hasIndices` flag.
+- It was thought to add support for having one pattern for matching the text, and another pattern for applying the decorations. For example, if someone sets the text pattern with a capture-group such as `(\\w+) - done`, just the text matching the capture group i.e. `Shopping` out of `Shopping - done` would be decorated. However, Node.js does not have support for locating indices of each capture group. See row for `hasIndices` flag inside [Browser compatibility chart](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#browser_compatibility). This is required by extension for locating the text positions. This feature will be added to the extension once Node.js gets support for `hasIndices` flag.
 
 ## Requirements
 
@@ -142,7 +142,15 @@ All the below are minor issues and in most cases, should not affect your experie
 
 ### 1.0.0
 
-- Implement all planned  features.
+- Implement all planned features.
+
+### 1.1.0
+
+- Remove preview tag from extension.
+
+### 1.2.0
+
+- Fix an exception that is reproducible only if the extension is installed from package.
 
 ## Meta Section
 
@@ -162,9 +170,3 @@ Some of these non-goals were set considering my little experience working on Jav
 - Decomposing functionality into several TypeScript classes and/or modules.
 - Writing unit and integration tests.
 - Giving special treatment to the setting file. For example, coloring the JSON-text for each rule with the decoration mentioned in that rule.
-
-### Scope for Improvements
-
-- Improve the performance. It is already fast. You should be able to find large files decorated in a jiffy, but the performance is dependent on the size of document. At the moment, the extension re-decorates the entire document as and when user types some text, but it should be possible to decorate just the visible portion of the text to make the performance independent of file sizes. I dropped this plan before as I thought that user would anyway like to see all the lines in the document decorated inside the minimap. But since Visual Studio Code does not render these decorations inside the minimap, that is no longer a consideration. Of course, having this kind of optimization would require support from Visual Studio Code to let the extension know when user is scrolling the document up and down, and when user resizes the text editor window vertically. I worry that when user is rapidly scrolling through the document, the new behavior will provide an inferior experience.
-
-- Once Node.js adds support for `hasIndices` flag, I would like to add support for decorating partial text out of the full text that matches with the patterns.

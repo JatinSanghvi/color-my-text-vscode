@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	let todoEditors: vscode.TextEditor[];
 	let doneEditors: vscode.TextEditor[];
-	let decorationTypeMap: Map<Rule, vscode.TextEditorDecorationType> = new Map();
+	let allDecorationTypes: vscode.TextEditorDecorationType[][] = [];
 
 	function resetDecorations(): void {
 		todoEditors = vscode.window.visibleTextEditors.slice();
@@ -49,16 +49,17 @@ export function activate(context: vscode.ExtensionContext): void {
 
 		// Clear all decorations.
 		todoEditors.forEach(todoEditor =>
-			decorationTypeMap.forEach(decorationType =>
+			allDecorationTypes.flat().forEach(decorationType =>
 				todoEditor.setDecorations(decorationType, [])));
 
 		// Refresh decoration-type map.
-		decorationTypeMap = new Map();
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-		configurations?.forEach(configuration =>
-			configuration.rules?.forEach(rule => {
-
-				const renderOptions: vscode.DecorationRenderOptions = {
+		allDecorationTypes = configurations === undefined
+			? []
+			: configurations.map(configuration => configuration.rules === undefined
+				? []
+				: configuration.rules.map(rule =>
+					vscode.window.createTextEditorDecorationType({
 					color: !Object.values(Color).includes(rule.color!) ? undefined : new vscode.ThemeColor('terminal.ansi' + rule.color),
 					fontWeight: rule.bold === undefined ? undefined : rule.bold ? 'bold' : 'normal',
 					fontStyle: rule.italic === undefined ? undefined : rule.italic ? 'italic' : 'normal',
@@ -68,14 +69,11 @@ export function activate(context: vscode.ExtensionContext): void {
 						: rule.strikeThrough === true ? 'line-through'
 						: rule.underline === false || rule.strikeThrough === false ? 'none'
 						: undefined,
-				};
-
-				decorationTypeMap.set(rule, vscode.window.createTextEditorDecorationType(renderOptions));
-			}));
+					})));
 	}
 
 	function updateDecorations(): void {
-		if (decorationTypeMap.size === 0) { return; }
+		if (allDecorationTypes.flat().length === 0) { return; }
 		if (todoEditors.length === 0) { return; }
 
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
@@ -110,7 +108,12 @@ export function activate(context: vscode.ExtensionContext): void {
 					});
 
 					if (ranges.length !== 0) {
-						todoEditor.setDecorations(decorationTypeMap.get(rule)!, ranges);
+						// We used to have rule-to-decoration-type map for selecting the decoration-type based on the
+						// rule, but if the extension is installed from the package, it was found that the object
+						// representing the same rule changes as user switches between documents, so the rule-object
+						// could not be used as the key for the map.
+						const decorationType = allDecorationTypes[configurations.indexOf(configuration)][configuration.rules!.indexOf(rule)];
+						todoEditor.setDecorations(decorationType, ranges);
 					}
 				}));
 

@@ -147,7 +147,10 @@ All the below are minor issues and in most cases, should not affect your experie
 - **1.2.0**
     - Fix an exception that is reproducible only if the extension is installed from package.
 - **1.3.0**
+    - Add example folder.
+    - Allow start-of-line and end-of-line anchors in patterns.
     - Handle invalid configuation properties.
+    - Skip invalid regular expression patterns.
 
 ## Meta Section
 

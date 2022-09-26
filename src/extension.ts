@@ -96,7 +96,14 @@ export function activate(context: vscode.ExtensionContext): void {
 					const ranges: vscode.Range[] = [];
 
 					Array.isArray(rule.patterns) && rule.patterns.forEach(pattern => {
-						const regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
+						if (typeof pattern !== 'string') { return; }
+
+						let regExp: RegExp;
+						try {
+							regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
+						} catch (e) {
+							return; // Skip invalid regular expression patterns.
+						}
 
 						for (let line = 0; line < todoEditor.document.lineCount; line++) {
 							for (const match of todoEditor.document.lineAt(line).text.matchAll(regExp)) {

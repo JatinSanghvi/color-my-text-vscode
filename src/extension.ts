@@ -54,22 +54,21 @@ export function activate(context: vscode.ExtensionContext): void {
 
 		// Refresh decoration-type map.
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-		allDecorationTypes = configurations === undefined
+		allDecorationTypes = !Array.isArray(configurations)
 			? []
-			: configurations.map(configuration => configuration.rules === undefined
+			: configurations.map(configuration => !Array.isArray(configuration.rules)
 				? []
-				: configuration.rules.map(rule =>
-					vscode.window.createTextEditorDecorationType({
+				: configuration.rules.map(rule => vscode.window.createTextEditorDecorationType({
 					color: !Object.values(Color).includes(rule.color!) ? undefined : new vscode.ThemeColor('terminal.ansi' + rule.color),
-					fontWeight: rule.bold === undefined ? undefined : rule.bold ? 'bold' : 'normal',
-					fontStyle: rule.italic === undefined ? undefined : rule.italic ? 'italic' : 'normal',
+					fontWeight: typeof rule.bold !== 'boolean' ? undefined : rule.bold ? 'bold' : 'normal',
+					fontStyle: typeof rule.italic !== 'boolean' ? undefined : rule.italic ? 'italic' : 'normal',
 					textDecoration:
 						rule.underline === true && rule.strikeThrough === true ? 'underline line-through'
 						: rule.underline === true ? 'underline'
 						: rule.strikeThrough === true ? 'line-through'
 						: rule.underline === false || rule.strikeThrough === false ? 'none'
 						: undefined,
-					})));
+				})));
 	}
 
 	function updateDecorations(): void {
@@ -77,11 +76,13 @@ export function activate(context: vscode.ExtensionContext): void {
 		if (todoEditors.length === 0) { return; }
 
 		const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-		if (configurations === undefined) { return; }
+		if (!Array.isArray(configurations)) { return; }
 
 		todoEditors.forEach(todoEditor => {
 			const applicableConfigurations = configurations.filter(configuration =>
-				configuration.paths?.some(path => {
+				Array.isArray(configuration.paths) && configuration.paths.some(path => {
+					if (typeof path !== 'string') { return false; }
+
 					// Support matches by filenames and relative file paths.
 					const pattern = path.includes('/') || path.includes('\\') ? path : '**/' + path;
 					const options: minimatch.IOptions = { nocase: process.platform === 'win32' };
@@ -93,11 +94,11 @@ export function activate(context: vscode.ExtensionContext): void {
 			const text = todoEditor.document.getText();
 
 			applicableConfigurations.forEach(configuration =>
-				configuration.rules?.forEach(rule => {
+				Array.isArray(configuration.rules) && configuration.rules?.forEach(rule => {
 					const ranges: vscode.Range[] = [];
 
-					rule.patterns?.forEach(pattern => {
-						const regExp = new RegExp(pattern, rule.matchCase ? 'g' : 'gi');
+					Array.isArray(rule.patterns) && rule.patterns.forEach(pattern => {
+						const regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
 
 						for (const match of text.matchAll(regExp)) {
 							if (match.index === undefined || match[0].length === 0) { continue; }

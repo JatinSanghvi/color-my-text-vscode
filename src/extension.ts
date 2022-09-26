@@ -113,14 +113,12 @@ export function activate(context: vscode.ExtensionContext): void {
 						}
 					});
 
-					if (ranges.length !== 0) {
-						// We used to have rule-to-decoration-type map for selecting the decoration-type based on the
-						// rule, but if the extension is installed from the package, it was found that the object
-						// representing the same rule changes as user switches between documents, so the rule-object
-						// could not be used as the key for the map.
-						const decorationType = allDecorationTypes[configurations.indexOf(configuration)][configuration.rules!.indexOf(rule)];
-						todoEditor.setDecorations(decorationType, ranges);
-					}
+					// We used to have rule-to-decoration-type map for selecting the decoration-type based on the
+					// rule, but if the extension is installed from the package, it was found that the object
+					// representing the same rule changes as user switches between documents, so the rule-object
+					// could not be used as the key for the map.
+					const decorationType = allDecorationTypes[configurations.indexOf(configuration)][configuration.rules!.indexOf(rule)];
+					todoEditor.setDecorations(decorationType, ranges);
 				}));
 
 			doneEditors.push(todoEditor);

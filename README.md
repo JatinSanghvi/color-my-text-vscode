@@ -12,31 +12,9 @@ Still confused? Clone [this repository](https://github.com/JatinSanghvi/color-my
 
 ### Fully Configurable
 
-#### Example Workspace Setting
+#### Anatomy of Workspace Setting
 
-```jsonc
-"colorMyText.configurations": [
-    // Multiple configurations.
-    {
-        // Multiple paths.
-        "paths": ["*.md", "todos/**/todo.txt"],
-        "rules": [
-            // Multiple rules.
-            { "patterns": [".* - done"],  "strikeThrough": true },
-            { "patterns": [".* - doing"], "bold": true, "underline": true },
-            { "patterns": [".* - todo"],  "italic": true }
-        ]
-    },
-    {
-        "paths": ["C:/Log Files/*.log"],
-        "rules": [
-            // Multiple text patterns.
-            { "patterns": ["Critical", "Error"], "matchCase": true, "color": "BrightRed" },
-            { "patterns": ["Warning"],           "matchCase": true, "color": "Yellow" }
-        ]
-    }
-]
-```
+![workspace-setting](/images/setting.png)
 
 #### Specify files, file types, folders, or any combination of them
 

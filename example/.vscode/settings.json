@@ -93,25 +93,6 @@
                     "color": "Cyan"
                 },
             ]
-        },
-        {
-            "paths": [
-                "*.out"
-            ],
-            "rules": [
-                {
-                    "patterns": [
-                        ".* error [A-Z].*"
-                    ],
-                    "color": "BrightRed"
-                },
-                {
-                    "patterns": [
-                        "(\\d|:)+>.*"
-                    ],
-                    "color": "BrightBlue"
-                }
-            ]
         }
     ],
     "editor.foldingMaximumRegions": 10000,

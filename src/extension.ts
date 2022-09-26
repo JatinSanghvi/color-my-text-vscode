@@ -91,8 +91,6 @@ export function activate(context: vscode.ExtensionContext): void {
 
 			if (applicableConfigurations.length === 0) { return; }
 
-			const text = todoEditor.document.getText();
-
 			applicableConfigurations.forEach(configuration =>
 				Array.isArray(configuration.rules) && configuration.rules?.forEach(rule => {
 					const ranges: vscode.Range[] = [];
@@ -100,11 +98,11 @@ export function activate(context: vscode.ExtensionContext): void {
 					Array.isArray(rule.patterns) && rule.patterns.forEach(pattern => {
 						const regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
 
-						for (const match of text.matchAll(regExp)) {
-							if (match.index === undefined || match[0].length === 0) { continue; }
-							const startPosition = todoEditor.document.positionAt(match.index);
-							const endPosition = todoEditor.document.positionAt(match.index + match[0].length);
-							ranges.push(new vscode.Range(startPosition, endPosition));
+						for (let line = 0; line < todoEditor.document.lineCount; line++) {
+							for (const match of todoEditor.document.lineAt(line).text.matchAll(regExp)) {
+								if (match.index === undefined || match[0].length === 0) { continue; }
+								ranges.push(new vscode.Range(line, match.index, line, match.index + match[0].length));
+							}
 						}
 					});
 

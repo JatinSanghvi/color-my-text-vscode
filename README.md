@@ -1,6 +1,6 @@
 # Color My Text
 
-![color-my-text](/images/hero.png)
+![color-my-text](/images/promo.gif)
 
 ## Introduction
 

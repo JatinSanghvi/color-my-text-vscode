@@ -140,17 +140,14 @@ All the below are minor issues and in most cases, should not affect your experie
 
 ## Release Notes
 
-### 1.0.0
-
-- Implement all planned features.
-
-### 1.1.0
-
-- Remove preview tag from extension.
-
-### 1.2.0
-
-- Fix an exception that is reproducible only if the extension is installed from package.
+- **1.0.0**
+    - Implement all planned features.
+- **1.1.0**
+    - Remove preview tag from extension.
+- **1.2.0**
+    - Fix an exception that is reproducible only if the extension is installed from package.
+- **1.3.0**
+    - Handle invalid configuation properties.
 
 ## Meta Section
 

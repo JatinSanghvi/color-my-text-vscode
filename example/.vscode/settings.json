@@ -1,4 +1,121 @@
 {
-    "workbench.preferredLightColorTheme": "Quiet Light",
-    "workbench.preferredDarkColorTheme": "Kimbie Dark"
+    "colorMyText.configurations": [
+        {
+            "paths": [
+                "todos/**/*.todo"
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        ".+ - high.*"
+                    ],
+                    "color": "Red"
+                },
+                {
+                    "patterns": [
+                        ".+ - medium.*"
+                    ],
+                    "color": "Yellow"
+                },
+                {
+                    "patterns": [
+                        ".+ - low.*"
+                    ],
+                    "color": "Blue"
+                },
+                {
+                    "patterns": [
+                        "\\w.* - to do.*"
+                    ],
+                    "italic": true
+                },
+                {
+                    "patterns": [
+                        "\\w.* - in progress.*",
+                        "\\w.* - pending.*"
+                    ],
+                    "bold": true
+                },
+                {
+                    "patterns": [
+                        "\\w.* - done.*"
+                    ],
+                    "strikeThrough": true
+                }
+            ]
+        },
+        {
+            "paths": [
+                "concurrency-analysis"
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        "set .+"
+                    ],
+                    "color": "Blue"
+                },
+                {
+                    "patterns": [
+                        "get .+"
+                    ],
+                    "color": "Green"
+                },
+                {
+                    "patterns": [
+                        "iter .+"
+                    ],
+                    "color": "Magenta"
+                },
+                {
+                    "patterns": [
+                        "if.*:",
+                        "else",
+                        "while.*:",
+                        "try:",
+                        "except:",
+                        "finally:"
+                    ],
+                    "color": "Red",
+                    "italic": true
+                },
+                {
+                    "patterns": [
+                        "#.*"
+                    ],
+                    "color": "BrightBlack",
+                    "italic": true
+                },
+                {
+                    "patterns": [
+                        ".*"
+                    ],
+                    "color": "Cyan"
+                },
+            ]
+        },
+        {
+            "paths": [
+                "*.out"
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        ".* error [A-Z].*"
+                    ],
+                    "color": "BrightRed"
+                },
+                {
+                    "patterns": [
+                        "(\\d|:)+>.*"
+                    ],
+                    "color": "BrightBlue"
+                }
+            ]
+        }
+    ],
+    "editor.foldingMaximumRegions": 10000,
+    "workbench.preferredLightColorTheme": "Default Light+",
+    "workbench.preferredDarkColorTheme": "Default Dark+",
+    "workbench.colorTheme": "Default Dark+"
 }

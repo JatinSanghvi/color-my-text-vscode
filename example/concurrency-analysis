@@ -1,0 +1,64 @@
+# This is a pseudo-Python code. I had created it to visualize how shared are accessed, to ensure that there are no
+# concurrency issues and to simplify the locking logic. I could not find a great extension for coloring the lines, which
+# prompted me to create the extension.
+
+set rows-lock = free
+set rows = empty
+set lease-renewal-count = 0
+set state = checking
+
+RunChangeConsumptionLoopAsync
+    while:
+        if state == checking:
+            GetTableChangesAsync
+                try:
+                    set rows = value
+                    get rows
+                except:
+                    set rows = empty
+            ProcessTableChangesAsync
+                get rows
+                set state = processing
+                try:
+                    ProcessChanges
+                        iter rows
+                except:
+                    ClearRowsAsync
+                        set rows-lock = acquire
+                        set lease-renewal-count = 0
+                        set state = checking
+                        set rows = empty
+                        set rows-lock = free
+                get rows
+                if:
+                    ReleaseLeasesAsync
+                        set rows-lock = acquire
+                        RecomputeLastSyncVersion
+                            iter rows
+                        try:
+                            BuildReleaseLeasesCommand
+                                iter rows
+                        finally:
+                            ClearRowsAsync
+                                set lease-renewal-count = 0
+                                set state = checking
+                                set rows = empty
+                                set rows-lock = free
+                else:
+                    ClearRowsAsync
+                        set rows-lock = acquire
+                        set lease-renewal-count = 0
+                        set state = checking
+                        set rows = empty
+                        set rows-lock = free
+
+RunLeaseRenewalLoopAsync
+    while:
+        RenewLeasesAsync
+            set rows-lock = acquire
+            if state == processing:
+                BuildRenewLeasesCommand
+                    iter rows
+                set lease-renewal-count = value
+                get lease-renewal-count
+            set rows-lock = free

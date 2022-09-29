@@ -8,6 +8,8 @@
 
 Still confused? Clone [this repository](https://github.com/JatinSanghvi/color-my-text-vscode) and open the `example` folder inside Visual Studio Code. Make sure that you install the 'Color My Text' extension which should be recommended to you after the folder is opened.
 
+Check out the extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=JatinSanghvi.color-my-text).
+
 ## Features
 
 ### Apply Text Decorations as You Type
@@ -121,27 +123,6 @@ All the below are minor issues and in most cases, should not affect your experie
 - While adding the configuration inside user or workspace settings, before you add any of the text decoration properties, Visual Studio Code would show JSON schema validation error `Missing Property "color".` This is because it is not able to correctly handle some of the advanced JSON schema attributes. This is possibly a design choice than a bug. Just ignore the message. Once you add any property (e.g., `bold`), the schema validation error will correctly disappear.
 
 - It was thought to add support for having one pattern for matching the text, and another pattern for applying the decorations. For example, if someone sets the text pattern with a capture-group such as `(\\w+) - done`, just the text matching the capture group i.e., `Shopping` out of `Shopping - done` would be decorated. However, Node.js does not have support for locating indices of each capture group. See row for `hasIndices` flag inside [Browser compatibility chart](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#browser_compatibility). This is required by extension for locating the text positions. This feature will be added to the extension once Node.js gets support for `hasIndices` flag.
-
-## Requirements
-
-- Visual Studio Code January 2021 Update (version 1.53) or later.
-
-## Release Notes
-
-- **1.0.0**
-    - Implement all planned features.
-- **1.1.0**
-    - Remove preview tag from extension.
-- **1.2.0**
-    - Fix an exception that is reproducible only if the extension is installed from package.
-- **1.3.0**
-    - Add example-folder.
-    - Allow start-of-line and end-of-line anchors in patterns.
-    - Handle invalid configruation properties.
-    - Skip invalid regular expression patterns.
-
-- **1.4.0**
-    - Update Readme document.
 
 ## Meta Section
 

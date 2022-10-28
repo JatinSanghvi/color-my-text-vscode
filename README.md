@@ -68,19 +68,19 @@ By providing a limited set of color options, we can ensure the colored text will
 
 #### `bold`
 
-You can set the value of this property to `true` to **bold** the text, to `false` to un-bold the text (if the color them had bolded it), or do not set it to retain the original font weight.
+You can set the value of this property to `true` to **bold** the text, to `false` to un-bold the text (if the color theme had bolded it), or do not set it to retain the original font weight.
 
 #### `italic`
 
-You can set the value of this property to `true` to _italicize_ the text, to `false` to un-italicize the text (if the color them had italicized it), or do not set it to retain the original font style.
+You can set the value of this property to `true` to _italicize_ the text, to `false` to un-italicize the text (if the color theme had italicized it), or do not set it to retain the original font style.
 
 #### `underline`
 
-You can set the value of this property to `true` to underline the text, to `false` to un-underline the text (if the color them had underlined it), or do not set it to retain the original text decoration.
+You can set the value of this property to `true` to <u>underline</u> the text, to `false` to un-underline the text (if the color theme had underlined it), or do not set it to retain the original text decoration.
 
 #### `strikeThrough`
 
-You can set the value of this property to `true` to ~~strike out~~ the text, to `false` to un-strike the text (if the color them had struck it), or do not set it to retain the original text decoration.
+You can set the value of this property to `true` to ~~strike out~~ the text, to `false` to un-strike the text (if the color theme had struck it), or do not set it to retain the original text decoration.
 
 #### Useful Information
 

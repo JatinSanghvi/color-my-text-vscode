@@ -18,6 +18,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		italic?: boolean;
 		underline?: boolean;
 		strikeThrough?: boolean;
+		unicode?: boolean;
 	};
 
 	enum Color {
@@ -98,9 +99,16 @@ export function activate(context: vscode.ExtensionContext): void {
 					Array.isArray(rule.patterns) && rule.patterns.forEach(pattern => {
 						if (typeof pattern !== 'string') { return; }
 
+						const flags = (() => {
+							let f = "g";
+							if (rule.matchCase !== true) { f = f + "i"; }
+							if (rule.unicode === true) { f = f + "u"; }
+							return f;
+						})();
+
 						let regExp: RegExp;
 						try {
-							regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
+							regExp = new RegExp(pattern,  flags);
 						} catch (e) {
 							return; // Skip invalid regular expression patterns.
 						}

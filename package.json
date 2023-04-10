@@ -1,6 +1,6 @@
 {
   "name": "color-my-text",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "publisher": "JatinSanghvi",
   "engines": {
     "vscode": "^1.53.0"
@@ -55,6 +55,10 @@
                     },
                     "matchCase": {
                       "description": "Specifies whether to perform case-sensitive match.",
+                      "type": "boolean"
+                    },
+                    "unicode": {
+                      "description": "Specifies whether to enable the Unicode support for regular expressions.",
                       "type": "boolean"
                     },
                     "color": {
@@ -143,6 +147,7 @@
     "*"
   ],
   "dependencies": {
+    "16": "^0.0.2",
     "glob": "^8.0.3",
     "minimatch": "^5.1.0"
   },

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as minimatch from 'minimatch';
+import { minimatch, MinimatchOptions } from 'minimatch';
 
 export function activate(context: vscode.ExtensionContext): void {
 	console.log('Extension "color-my-text" is activated.');
@@ -85,7 +85,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 					// Support matches by filenames and relative file paths.
 					const pattern = path.includes('/') || path.includes('\\') ? path : '**/' + path;
-					const options: minimatch.IOptions = { nocase: process.platform === 'win32' };
+					const options: MinimatchOptions = { nocase: process.platform === 'win32' };
 					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pattern, options);
 				}));
 
@@ -100,7 +100,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 						let regExp: RegExp;
 						try {
-							regExp = new RegExp(pattern, rule.matchCase === true ? 'g' : 'gi');
+							regExp = new RegExp(pattern, rule.matchCase === true ? 'gu' : 'giu');
 						} catch (e) {
 							return; // Skip invalid regular expression patterns.
 						}

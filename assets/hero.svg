@@ -1,30 +1,20 @@
 <svg viewBox="0 0 20 10" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0%" y="0%" width="100%" height="100%" fill="#25292e" />
-    <g transform="scale(0.75) translate(0 -1)" transform-origin="center center">
-        <g mask="url(#textMask)">
-            <g>
-                <rect x="0%" y="03%" width="100%" height="6%" fill="#bf85bf" />
-                <rect x="0%" y="11%" width="100%" height="6%" fill="#ea5e5e" />
-                <rect x="0%" y="19%" width="100%" height="6%" fill="#f7ba3e" />
-                <rect x="0%" y="27%" width="100%" height="6%" fill="#56b3b4" />
-                <rect x="0%" y="35%" width="100%" height="6%" fill="#bf85bf" />
-                <rect x="0%" y="43%" width="100%" height="6%" fill="#ea5e5e" />
-                <rect x="0%" y="51%" width="100%" height="6%" fill="#f7ba3e" />
-                <rect x="0%" y="59%" width="100%" height="6%" fill="#56b3b4" />
-                <rect x="0%" y="67%" width="100%" height="6%" fill="#bf85bf" />
-                <rect x="0%" y="75%" width="100%" height="6%" fill="#ea5e5e" />
-                <rect x="0%" y="83%" width="100%" height="6%" fill="#f7ba3e" />
-                <rect x="0%" y="91%" width="100%" height="6%" fill="#56b3b4" />
-            </g>
-            <mask id="textMask">
-                <text x="50%" y="50%" font-family="Eras ITC" font-size="10" font-weight="bold" fill="white"
-                    dominant-baseline="central" text-anchor="middle">C</text>
-            </mask>
-        </g>
+    <rect width="20" height="10" fill="#1f2937" />
+
+    <g transform="scale(7.5) translate(9.5 4.4)" transform-origin="center center">
+        <rect width="1" height="1" fill="#1f2937" />
+
+        <radialGradient id="text_gradient" cx="0.75" cy="0.25" r="0.75" gradientUnits="userSpaceOnUse">
+            <stop offset="0.0" stop-color="#c026d3" />
+            <stop offset="0.6" stop-color="#4f46e5" />
+            <stop offset="0.9" stop-color="#0891b2" />
+        </radialGradient>
+
+        <text x="0.5" y="0.5" font-family="Eras ITC" font-size="1" font-weight="bold" fill="url(#text_gradient)"
+            dominant-baseline="central" text-anchor="middle">C</text>
     </g>
-    <text x="50%" y="9" font-family="Eras ITC" font-size="1" dominant-baseline="central" text-anchor="middle">
-        <tspan fill="#bf85bf">C</tspan><tspan fill="#ea5e5e">O</tspan><tspan fill="#f7ba3e">L</tspan><tspan fill="#56b3b4">O</tspan><tspan fill="#bf85bf">R</tspan>
-        <tspan fill="#ea5e5e">M</tspan><tspan fill="#f7ba3e">Y</tspan>
-        <tspan fill="#56b3b4">T</tspan><tspan fill="#bf85bf">E</tspan><tspan fill="#ea5e5e">X</tspan><tspan fill="#f7ba3e">T</tspan>
-    </text>
+
+    <text x="50%" y="8.5" font-family="Eras ITC" font-size="1" dominant-baseline="central" text-anchor="middle"
+        fill="#0891b2">COLOR MY TEXT</text>
+
 </svg>

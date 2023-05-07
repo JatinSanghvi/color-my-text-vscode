@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 
 - Add support for Unicode regular expression patterns.
+- Update icon image and Readme document.
 
 ## [1.6.0] - 2022-09-29
 

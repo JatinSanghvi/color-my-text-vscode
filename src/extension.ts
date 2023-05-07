@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { minimatch, MinimatchOptions } from 'minimatch';
+import * as minimatch from 'minimatch';
+import { IOptions } from 'glob';
 
 export function activate(context: vscode.ExtensionContext): void {
 	console.log('Extension "color-my-text" is activated.');
@@ -85,7 +86,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 					// Support matches by filenames and relative file paths.
 					const pattern = path.includes('/') || path.includes('\\') ? path : '**/' + path;
-					const options: MinimatchOptions = { nocase: process.platform === 'win32' };
+					const options: IOptions = { nocase: process.platform === 'win32' };
 					return minimatch(vscode.workspace.asRelativePath(todoEditor.document.fileName), pattern, options);
 				}));
 

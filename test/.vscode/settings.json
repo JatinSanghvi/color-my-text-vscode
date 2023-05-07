@@ -1,0 +1,225 @@
+{
+    "colorMyText.configurations": [
+        {
+            // Configuration to test path behavior.
+            "paths": [
+                "path-tests/*-1.md",
+                "path-tests/*-?1.md",
+                "path-tests\\*-2.md",
+                "path-tests/**/*-3.md",
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        "test"
+                    ],
+                    "color": "BrightGreen"
+                }
+            ]
+        },
+        {
+            "paths": [
+                "tests.?d"
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        "(?<=Match 1 - ).*"
+                    ],
+                    "color": "BrightBlack"
+                },
+                {
+                    "patterns": [
+                        "(?<=Match 2 - ).*"
+                    ],
+                    "color": "BrightBlue"
+                },
+                {
+                    "patterns": [
+                        "(?<=Pattern 1 - ).*",
+                        "(?<=Pattern 2 - ).*",
+                        "(?<=\\u{55}nicode Pattern - ).*"
+                    ],
+                    "color": "BrightCyan"
+                },
+                {
+                    "patterns": [
+                        "(?<=`matchCase` True - ).*"
+                    ],
+                    "matchCase": true,
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
+                        "(?<=`matchCase` False - ).*"
+                    ],
+                    "matchCase": false,
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
+                        "(?<=`matchCase` Unspecified - ).*"
+                    ],
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
+                        "(?<=`bold` True - ).*"
+                    ],
+                    "bold": true,
+                    "color": "BrightMagenta"
+                },
+                {
+                    "patterns": [
+                        "(?<=`bold` False - ).*"
+                    ],
+                    "bold": false,
+                    "color": "BrightMagenta"
+                },
+                {
+                    "patterns": [
+                        "(?<=`bold` Unspecified - ).*"
+                    ],
+                    "color": "BrightMagenta"
+                },
+                {
+                    "patterns": [
+                        "(?<=`italic` True - ).*"
+                    ],
+                    "italic": true,
+                    "color": "BrightRed"
+                },
+                {
+                    "patterns": [
+                        "(?<=`italic` False - ).*"
+                    ],
+                    "italic": false,
+                    "color": "BrightRed"
+                },
+                {
+                    "patterns": [
+                        "(?<=`italic` Unspecified - ).*"
+                    ],
+                    "color": "BrightRed"
+                },
+                {
+                    "patterns": [
+                        "(?<=`underline` True - ).*"
+                    ],
+                    "underline": true,
+                    "color": "BrightWhite"
+                },
+                {
+                    "patterns": [
+                        "(?<=`underline` False - ).*"
+                    ],
+                    "underline": false,
+                    "color": "BrightWhite"
+                },
+                {
+                    "patterns": [
+                        "(?<=`underline` Unspecified - ).*"
+                    ],
+                    "color": "BrightWhite"
+                },
+                {
+                    "patterns": [
+                        "(?<=`strikeThrough` True - ).*"
+                    ],
+                    "strikeThrough": true,
+                    "color": "BrightYellow"
+                },
+                {
+                    "patterns": [
+                        "(?<=`strikeThrough` False - ).*"
+                    ],
+                    "strikeThrough": false,
+                    "color": "BrightYellow"
+                },
+                {
+                    "patterns": [
+                        "(?<=`strikeThrough` Unspecified - ).*"
+                    ],
+                    "color": "BrightYellow"
+                },
+                {
+                    "patterns": [
+                        "(?<=Multiple Patterns - .*)brown fox jumps(?=.*)"
+                    ],
+                    "bold": true
+                },
+                {
+                    "patterns": [
+                        "(?<=Multiple Patterns - .*)fox jumps over(?=.*)"
+                    ],
+                    "strikeThrough": true
+                },
+                {
+                    "patterns": [
+                        "(?<=Multiple Patterns - .*)jumps over the(?=.*)"
+                    ],
+                    "italic": true
+                },
+                {
+                    "patterns": [
+                        "(?<=Conflicting Patterns - .*)brown fox jumps(?=.*)"
+                    ],
+                    "color": "Cyan"
+                },
+                {
+                    "patterns": [
+                        "(?<=Conflicting Patterns - .*)fox jumps over(?=.*)"
+                    ],
+                    "color": "Green"
+                },
+                {
+                    "patterns": [
+                        "(?<=Conflicting Patterns - .*)jumps over the(?=.*)"
+                    ],
+                    "color": "Magenta"
+                },
+                {
+                    "patterns": [
+                        "(?<=`underline` then `strikeThroug\\w` - .*).*"
+                    ],
+                    "underline": true
+                },
+                {
+                    "patterns": [
+                        "(?<=`underlin\\w` then `strikeThrough` - .*).*"
+                    ],
+                    "strikeThrough": true
+                },
+                {
+                    "patterns": [
+                        "(?<=`strikeThrough` then `underlin\\w` - .*).*"
+                    ],
+                    "strikeThrough": true
+                },
+                {
+                    "patterns": [
+                        "(?<=`strikeThroug\\w` then `underline` - .*).*"
+                    ],
+                    "underline": true
+                }
+            ]
+        },
+        {
+            "paths": [
+                "tests.m?"
+            ],
+            "rules": [
+                {
+                    "patterns": [
+                        "(?<=New Path - ).*"
+                    ],
+                    "color": "Blue"
+                }
+            ]
+        }
+    ],
+    "editor.foldingMaximumRegions": 10000,
+    "workbench.preferredLightColorTheme": "Default Light+",
+    "workbench.preferredDarkColorTheme": "Default Dark+",
+    "workbench.colorTheme": "Default Dark+"
+}

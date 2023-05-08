@@ -1,6 +1,6 @@
 {
   "name": "color-my-text",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "publisher": "JatinSanghvi",
   "engines": {
     "vscode": "^1.67.0"

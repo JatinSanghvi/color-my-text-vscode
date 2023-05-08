@@ -136,10 +136,10 @@ It would be interesting to support decorations for capture groups within a regul
 
 However, after more contemplation, I decided not to implement this feature, the reasons being:
 
-1. The configuration JSON schema will get further complicated as users will need to provide an array of decorations under each rule.
-1. The support for multiple patterns in a rule might need to be dropped to avoid confusing conditions such as having two patterns with different number of capture groups.
-1. Some of the rules may require decorating the text matching the entire pattern while others may require decorating text matching the capture groups. This will require adding support for both kinds of use cases.
-1. This will most likely require introducing a breaking change to the configuration with no trivial migration path for existing users.
+- The configuration JSON schema will get further complicated as users will need to provide an array of decorations under each rule.
+- The support for multiple patterns in a rule might need to be dropped to avoid confusing conditions such as having two patterns with different number of capture groups.
+- Some of the rules may require decorating the text matching the entire pattern while others may require decorating text matching the capture groups. This will require adding support for both kinds of use cases.
+- This will most likely require introducing a breaking change to the configuration with no trivial migration path for existing users.
 
 ### Decorating Visible Text Only
 

@@ -6,7 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.8.0] - 2023-05-08
+
 - Add files to aid with manual testing.
+- Reduce package size.
 
 ## [1.7.0] - 2023-05-07
 

@@ -4,4 +4,3 @@ This directory contains files to aid manual testing of the extension. To perform
 
 1. The decoration status of files under `path-tests` folder match with the file names.
 1. The decoration status of text in `tests.md` file match with the text descriptions.
-

@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-03-02
+
+- Add support for custom hex color codes (#RGB, #RRGGBB, #RRGGBBAA).
+- Upgrade all dependencies.
+- Improve code quality and efficiency.
+
 ## [1.8.0] - 2023-05-08
 
 - Add files to aid with manual testing.

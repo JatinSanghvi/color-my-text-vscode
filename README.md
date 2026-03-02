@@ -66,6 +66,8 @@ You can choose one of the sixteen colors as listed in the [Integrated Terminal c
 
 By providing a limited set of color options, we can ensure the colored text will mix well with the rest of the text irrespective of the color theme selected by the user. Most of the standard Visual Studio Code color themes will choose the colors for the text that will contrast well with the editor background. And it prevents you from fixing all colors in the settings if you ever want to switch between Light and Dark colored themes. It also removes the requirement for two users sharing the configuration to have the same color theme set in their respective editors. In short, the text colors will update themselves automatically to match with the color themes.
 
+Alternatively, you can specify a custom hex color code in the `#RGB`, `#RRGGBB`, or `#RRGGBBAA` format, for example `#F00`, `#FF0000`, or `#FF000088`. This gives you precise control over the exact color, including the ability to set transparency via the alpha channel. Note that unlike the ANSI color names, custom hex colors are fixed and will not adapt to the user's color theme.
+
 #### `bold`
 
 You can set the value of this property to `true` to **bold** the text, to `false` to un-bold the text (if the color theme had bolded it), or do not set it to retain the original font weight.

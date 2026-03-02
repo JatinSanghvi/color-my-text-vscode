@@ -180,6 +180,24 @@
                 },
                 {
                     "patterns": [
+                        "(?<=`color` #RGB - ).*"
+                    ],
+                    "color": "#F00"
+                },
+                {
+                    "patterns": [
+                        "(?<=`color` #RRGGBB - ).*"
+                    ],
+                    "color": "#FF8C00"
+                },
+                {
+                    "patterns": [
+                        "(?<=`color` #RRGGBBAA - ).*"
+                    ],
+                    "color": "#00FF0080"
+                },
+                {
+                    "patterns": [
                         "(?<=`underline` then `strikeThroug\\w` - .*).*"
                     ],
                     "underline": true
@@ -219,7 +237,7 @@
         }
     ],
     "editor.foldingMaximumRegions": 10000,
-    "workbench.preferredLightColorTheme": "Default Light+",
+    "workbench.preferredLightColorTheme": "Experimental Dark",
     "workbench.preferredDarkColorTheme": "Default Dark+",
     "workbench.colorTheme": "Default Dark+"
 }

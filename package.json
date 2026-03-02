@@ -1,9 +1,9 @@
 {
   "name": "color-my-text",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "publisher": "JatinSanghvi",
   "engines": {
-    "vscode": "^1.67.0"
+    "vscode": "^1.109.0"
   },
   "license": "MIT",
   "displayName": "Color My Text",
@@ -58,25 +58,33 @@
                       "type": "boolean"
                     },
                     "color": {
-                      "markdownDescription": "Specifies the terminal ANSI color. _Do not specify to retain original text color._",
-                      "type": "string",
-                      "enum": [
-                        "Black",
-                        "Blue",
-                        "BrightBlack",
-                        "BrightBlue",
-                        "BrightCyan",
-                        "BrightGreen",
-                        "BrightMagenta",
-                        "BrightRed",
-                        "BrightWhite",
-                        "BrightYellow",
-                        "Cyan",
-                        "Green",
-                        "Magenta",
-                        "Red",
-                        "White",
-                        "Yellow"
+                      "markdownDescription": "Specifies the text color. Accepts terminal ANSI color names (e.g., `Red`, `BrightBlue`) or hex color codes (e.g., `#RGB`, `#RRGGBB`, `#RRGGBBAA`). _Do not specify to retain original text color._",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Black",
+                            "Blue",
+                            "BrightBlack",
+                            "BrightBlue",
+                            "BrightCyan",
+                            "BrightGreen",
+                            "BrightMagenta",
+                            "BrightRed",
+                            "BrightWhite",
+                            "BrightYellow",
+                            "Cyan",
+                            "Green",
+                            "Magenta",
+                            "Red",
+                            "White",
+                            "Yellow"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "format": "color-hex"
+                        }
                       ]
                     },
                     "bold": {
@@ -143,20 +151,18 @@
     "*"
   ],
   "dependencies": {
-    "glob": "^8.1.0",
-    "minimatch": "^5.0.1"
+    "minimatch": "^10.0.1"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^18.16.3",
-    "@types/vscode": "^1.67.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
-    "@vscode/test-electron": "^2.3.0",
-    "eslint": "^8.39.0",
-    "mocha": "^10.2.0",
-    "typescript": "^5.0.4"
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.109.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^8.57.1",
+    "mocha": "^11.0.0",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

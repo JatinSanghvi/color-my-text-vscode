@@ -69,6 +69,12 @@
 > - Only text `over` should be green in color.
 > - Only text `the` should be magenta in color.
 
+## Custom Color Behavior
+
+- `color` #RGB - This text should be red (#F00).
+- `color` #RRGGBB - This text should be orange (#FF8C00).
+- `color` #RRGGBBAA - This text should be semi-transparent green (#00FF0080).
+
 ## Underline and StrikeThrough Behavior
 
 - `underline` then `strikeThrough` - This text should be underlined.

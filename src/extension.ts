@@ -10,6 +10,7 @@ type Rule = {
     patterns?: string[];
     color?: string;
     matchCase?: boolean;
+    multiLine?: boolean;
     bold?: boolean;
     italic?: boolean;
     underline?: boolean;
@@ -20,6 +21,7 @@ type Rule = {
 type RuleData = {
     decorationType: vscode.TextEditorDecorationType;
     regexes: RegExp[];
+    multiLine: boolean;
 };
 
 // Precomputed data for a single configuration entry, rebuilt whenever settings change.
@@ -59,15 +61,17 @@ function buildRuleData(rule: Rule): RuleData {
         textDecoration,
     });
 
+    const flags = 'g' + (rule.matchCase === true ? '' : 'i') + (rule.multiLine === true ? 's' : '') + 'u';
+
     const regexes = toArray(rule.patterns).flatMap(pattern => {
         try {
-            return [new RegExp(pattern, rule.matchCase === true ? 'gu' : 'giu')];
+            return [new RegExp(pattern, flags)];
         } catch {
             return []; // Skip invalid regex patterns.
         }
     });
 
-    return { decorationType, regexes };
+    return { decorationType, regexes, multiLine: rule.multiLine === true };
 }
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -112,14 +116,28 @@ export function activate(context: vscode.ExtensionContext): void {
 
             if (matchingRuleData.length === 0) { return; }
 
-            matchingRuleData.forEach(({ decorationType, regexes }) => {
+            let documentText: string | undefined;
+
+            matchingRuleData.forEach(({ decorationType, regexes, multiLine }) => {
                 const ranges: vscode.Range[] = [];
 
-                for (const regex of regexes) {
-                    for (let lineNum = 0; lineNum < editor.document.lineCount; lineNum++) {
-                        for (const match of editor.document.lineAt(lineNum).text.matchAll(regex)) {
+                if (multiLine) {
+                    documentText ??= editor.document.getText();
+                    for (const regex of regexes) {
+                        for (const match of documentText.matchAll(regex)) {
                             if (match.index === undefined || match[0].length === 0) { continue; }
-                            ranges.push(new vscode.Range(lineNum, match.index, lineNum, match.index + match[0].length));
+                            const startPos = editor.document.positionAt(match.index);
+                            const endPos = editor.document.positionAt(match.index + match[0].length);
+                            ranges.push(new vscode.Range(startPos, endPos));
+                        }
+                    }
+                } else {
+                    for (const regex of regexes) {
+                        for (let lineNum = 0; lineNum < editor.document.lineCount; lineNum++) {
+                            for (const match of editor.document.lineAt(lineNum).text.matchAll(regex)) {
+                                if (match.index === undefined || match[0].length === 0) { continue; }
+                                ranges.push(new vscode.Range(lineNum, match.index, lineNum, match.index + match[0].length));
+                            }
                         }
                     }
                 }

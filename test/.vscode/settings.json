@@ -64,6 +64,26 @@
                 },
                 {
                     "patterns": [
+                        "(?<=`multiLine` True - )\\/\\*.*?\\*\\/"
+                    ],
+                    "multiLine": true,
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
+                        "(?<=`multiLine` False - )\\/\\*.*?\\*\\/"
+                    ],
+                    "multiLine": false,
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
+                        "(?<=`multiLine` Unspecified - )\\/\\*.*?\\*\\/"
+                    ],
+                    "color": "BrightGreen"
+                },
+                {
+                    "patterns": [
                         "(?<=`bold` True - ).*"
                     ],
                     "bold": true,
@@ -144,38 +164,44 @@
                 },
                 {
                     "patterns": [
-                        "(?<=Multiple Patterns - .*)brown fox jumps(?=.*)"
+                        "(?<=Multiple Patterns - \\/\\*(?:(?!\\*\\/).)*)brown fox jumps(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "bold": true
                 },
                 {
                     "patterns": [
-                        "(?<=Multiple Patterns - .*)fox jumps over(?=.*)"
+                        "(?<=Multiple Patterns - \\/\\*(?:(?!\\*\\/).)*)fox jumps over(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "strikeThrough": true
                 },
                 {
                     "patterns": [
-                        "(?<=Multiple Patterns - .*)jumps over the(?=.*)"
+                        "(?<=Multiple Patterns - \\/\\*(?:(?!\\*\\/).)*)jumps over the(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "italic": true
                 },
                 {
                     "patterns": [
-                        "(?<=Conflicting Patterns - .*)brown fox jumps(?=.*)"
+                        "(?<=Conflicting Patterns - \\/\\*(?:(?!\\*\\/).)*)brown fox jumps(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "color": "Cyan"
                 },
                 {
                     "patterns": [
-                        "(?<=Conflicting Patterns - .*)fox jumps over(?=.*)"
+                        "(?<=Conflicting Patterns - \\/\\*(?:(?!\\*\\/).)*)fox jumps over(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "color": "Green"
                 },
                 {
                     "patterns": [
-                        "(?<=Conflicting Patterns - .*)jumps over the(?=.*)"
+                        "(?<=Conflicting Patterns - \\/\\*(?:(?!\\*\\/).)*)jumps over the(?=.*\\*\\/)"
                     ],
+                    "multiLine": true,
                     "color": "Magenta"
                 },
                 {
@@ -237,7 +263,7 @@
         }
     ],
     "editor.foldingMaximumRegions": 10000,
-    "workbench.preferredLightColorTheme": "Experimental Dark",
+    "workbench.preferredLightColorTheme": "Default Dark Modern",
     "workbench.preferredDarkColorTheme": "Default Dark+",
     "workbench.colorTheme": "Default Dark+"
 }

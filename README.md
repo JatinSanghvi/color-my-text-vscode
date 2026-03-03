@@ -54,6 +54,10 @@ You can specify multiple regular expression patterns with `patterns` property fo
 
 You can specify whether to perform case-sensitive matches of text with the regular expressions with the `matchCase` property. If the property is not specified, the extension will perform case-insensitive matches. In the example setting above, all rules for paths `*.md` and `todos/**/todo.txt` will be applied case-insensitively while the rules for path `C:\Log Files\*.log` will be applied case-sensitively.
 
+#### Specify whether patterns can match across multiple lines
+
+You can set the `multiLine` property to `true` to allow patterns to match text spanning multiple lines. When enabled, the `.` character in the regular expression will also match newline characters, so a pattern like `\\/\\*[\\s\\S]*?\\*\\/` or `\\/\\*.*?\\*\\/` will color block comments that span across lines. If the property is not specified or is set to `false`, patterns only match within a single line.
+
 ### Numerous Color and Style Combinations
 
 ![theme-support](/images/theme-support.gif)

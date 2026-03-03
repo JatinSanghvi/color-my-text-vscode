@@ -57,6 +57,10 @@
                       "description": "Specifies whether to perform case-sensitive match.",
                       "type": "boolean"
                     },
+                    "multiLine": {
+                      "description": "Specifies whether the regular expression patterns can match across multiple lines.",
+                      "type": "boolean"
+                    },
                     "color": {
                       "markdownDescription": "Specifies the text color. Accepts terminal ANSI color names (e.g., `Red`, `BrightBlue`) or hex color codes (e.g., `#RGB`, `#RRGGBB`, `#RRGGBBAA`). _Do not specify to retain original text color._",
                       "anyOf": [

@@ -23,6 +23,20 @@
 - `matchCase` Unspecified - This text should be bright green in color.
 - `matchCase` UNSPECIFIED - This text should be bright green in color.
 
+## Property `multiLine`
+
+- `multiLine` True - /*
+        This text should be bright green in color.
+    */
+
+- `multiLine` False - /*
+        This text should not be colored.
+    */
+
+- `multiLine` Unspecified - /*
+        This text should not be colored.
+    */
+
 ## Property `bold`
 
 - `bold` True - This text should be bold.
@@ -53,7 +67,10 @@
 
 ## Text Matching Multiple Regular Expression Patterns
 
-- Multiple Patterns - The quick brown fox jumps over the lazy dog.
+- Multiple Patterns - /*
+        The quick brown fox jumps over the lazy dog.
+        The quick brown fox jumps over the lazy dog.
+    */
 
 > In above,
 >
@@ -63,7 +80,10 @@
 
 ## Text Matching Multiple Conflicting Patterns
 
-- Conflicting Patterns - The quick brown fox jumps over the lazy dog.
+- Conflicting Patterns - /*
+        The quick brown fox jumps over the lazy dog.
+        The quick brown fox jumps over the lazy dog.
+    */
 
 > In above,
 >

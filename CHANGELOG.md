@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-03-03
+
+- Revise README document.
+- Add support for multi-line pattern matching.
+- Improve code quality and efficiency.
+
 ## [1.9.0] - 2026-03-02
 
 - Add support for custom hex color codes.

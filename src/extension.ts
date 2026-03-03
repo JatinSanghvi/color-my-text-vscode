@@ -1,119 +1,133 @@
 import * as vscode from 'vscode';
-import { minimatch, MinimatchOptions } from 'minimatch';
+import { minimatch } from 'minimatch';
+
+type Configuration = {
+    paths?: string[];
+    rules?: Rule[];
+};
+
+type Rule = {
+    patterns?: string[];
+    color?: string;
+    matchCase?: boolean;
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+    strikeThrough?: boolean;
+};
+
+// Precomputed data for a single rule.
+type RuleData = {
+    decorationType: vscode.TextEditorDecorationType;
+    regexes: RegExp[];
+};
+
+// Precomputed data for a single configuration entry, rebuilt whenever settings change.
+type ConfigData = {
+    globs: string[];
+    ruleData: RuleData[];
+};
+
+function toArray<T>(value: T[] | undefined): T[] {
+    return Array.isArray(value) ? value : [];
+}
+
+// ANSI color names map to VS Code terminal theme tokens ('terminal.ansi<Name>').
+const ansiColorNames = new Set<string>([
+    'Black', 'Blue', 'BrightBlack', 'BrightBlue', 'BrightCyan', 'BrightGreen',
+    'BrightMagenta', 'BrightRed', 'BrightWhite', 'BrightYellow',
+    'Cyan', 'Green', 'Magenta', 'Red', 'White', 'Yellow',
+]);
+
+function buildRuleData(rule: Rule): RuleData {
+    const color = typeof rule.color !== 'string' ? undefined
+        : ansiColorNames.has(rule.color) ? new vscode.ThemeColor('terminal.ansi' + rule.color)
+        : rule.color;
+
+    // 'none' explicitly removes any theme-inherited decoration when either flag is false.
+    const textDecoration =
+        rule.underline === true && rule.strikeThrough === true ? 'underline line-through'
+        : rule.underline === true ? 'underline'
+        : rule.strikeThrough === true ? 'line-through'
+        : rule.underline === false || rule.strikeThrough === false ? 'none'
+        : undefined;
+
+    const decorationType = vscode.window.createTextEditorDecorationType({
+        color,
+        fontWeight: typeof rule.bold !== 'boolean' ? undefined : rule.bold ? 'bold' : 'normal',
+        fontStyle: typeof rule.italic !== 'boolean' ? undefined : rule.italic ? 'italic' : 'normal',
+        textDecoration,
+    });
+
+    const regexes = toArray(rule.patterns).flatMap(pattern => {
+        try {
+            return [new RegExp(pattern, rule.matchCase === true ? 'gu' : 'giu')];
+        } catch {
+            return []; // Skip invalid regex patterns.
+        }
+    });
+
+    return { decorationType, regexes };
+}
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('Extension "color-my-text" is activated.');
 
-    type Configuration = {
-        paths?: string[],
-        rules?: Rule[],
-    };
+    let allConfigData: ConfigData[] = [];
 
-    type Rule = {
-        patterns?: string[];
-        color?: string;
-        matchCase?: boolean;
-        bold?: boolean;
-        italic?: boolean;
-        underline?: boolean;
-        strikeThrough?: boolean;
-    };
+    // todoEditors need (re)decoration; doneEditors are already up to date.
+    // Tracking both avoids re-decorating unchanged editors when unrelated ones become visible.
+    let todoEditors: vscode.TextEditor[] = [];
+    let doneEditors: vscode.TextEditor[] = [];
 
-    function toArray<T>(value: T[] | undefined): T[] {
-        return Array.isArray(value) ? value : [];
-    }
-
-    const ansiColorValues = new Set<string>([
-        'Black', 'Blue', 'BrightBlack', 'BrightBlue', 'BrightCyan', 'BrightGreen',
-        'BrightMagenta', 'BrightRed', 'BrightWhite', 'BrightYellow',
-        'Cyan', 'Green', 'Magenta', 'Red', 'White', 'Yellow',
-    ]);
-    const minimatchOptions: MinimatchOptions = { nocase: process.platform === 'win32' };
-
-    let todoEditors: vscode.TextEditor[];
-    let doneEditors: vscode.TextEditor[];
-    let allDecorationTypes: vscode.TextEditorDecorationType[][] = [];
-    let allCompiledPatterns: RegExp[][][] = [];
-
+    // Disposes old decoration types and rebuilds allConfigData from current settings.
     function resetDecorations(): void {
         todoEditors = vscode.window.visibleTextEditors.slice();
         doneEditors = [];
 
-        // Clear all decorations.
-        todoEditors.forEach(todoEditor =>
-            allDecorationTypes.forEach(types =>
-                types.forEach(decorationType =>
-                    todoEditor.setDecorations(decorationType, []))));
+        allConfigData.forEach(configData => configData.ruleData.forEach(ruleData => ruleData.decorationType.dispose()));
 
-        // Refresh decoration-type and compiled-pattern maps.
         const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-        allDecorationTypes = toArray(configurations).map(configuration =>
-            toArray(configuration.rules).map(rule =>
-                vscode.window.createTextEditorDecorationType({
-                    color: typeof rule.color !== 'string' ? undefined
-                        : ansiColorValues.has(rule.color) ? new vscode.ThemeColor('terminal.ansi' + rule.color)
-                        : rule.color,
-                    fontWeight: typeof rule.bold !== 'boolean' ? undefined : rule.bold ? 'bold' : 'normal',
-                    fontStyle: typeof rule.italic !== 'boolean' ? undefined : rule.italic ? 'italic' : 'normal',
-                    textDecoration:
-                        rule.underline === true && rule.strikeThrough === true ? 'underline line-through'
-                        : rule.underline === true ? 'underline'
-                        : rule.strikeThrough === true ? 'line-through'
-                        : rule.underline === false || rule.strikeThrough === false ? 'none'
-                        : undefined,
-                })));
-
-        allCompiledPatterns = toArray(configurations).map(configuration =>
-            toArray(configuration.rules).map(rule =>
-                toArray(rule.patterns).flatMap(pattern => {
-                    try {
-                        return [new RegExp(pattern, rule.matchCase === true ? 'gu' : 'giu')];
-                    } catch (e) {
-                        return []; // Skip invalid regular expression patterns.
-                    }
-                })));
+        allConfigData = toArray(configurations).map(configuration => ({
+            globs: toArray(configuration.paths),
+            ruleData: toArray(configuration.rules).map(buildRuleData),
+        }));
     }
 
+    // Applies decorations to all queued editors. Runs on a 500ms timer to batch rapid edits.
     function updateDecorations(): void {
-        if (allDecorationTypes.every(types => types.length === 0)) { return; }
+        if (allConfigData.every(configData => configData.ruleData.length === 0)) { return; }
         if (todoEditors.length === 0) { return; }
 
-        const configurations = vscode.workspace.getConfiguration('colorMyText').get<Configuration[]>('configurations');
-        if (!Array.isArray(configurations)) { return; }
+        todoEditors.forEach(editor => {
+            const filePath = vscode.workspace.asRelativePath(editor.document.fileName);
 
-        todoEditors.forEach(todoEditor => {
-            const relPath = vscode.workspace.asRelativePath(todoEditor.document.fileName);
+            // Collect rule data from all configurations whose path globs match this editor's file.
+            const matchingRuleData = allConfigData.flatMap(configData =>
+                configData.globs.some(glob => {
+                    // A bare filename (no path separators) is matched against any directory level.
+                    const pattern = glob.includes('/') || glob.includes('\\') ? glob : '**/' + glob;
+                    return minimatch(filePath, pattern, { nocase: process.platform === 'win32' });
+                }) ? configData.ruleData : []);
 
-            const applicableConfigurations = configurations.flatMap((configuration, ci) =>
-                toArray(configuration.paths).some(path => {
-                    // Support matches by filenames and relative file paths.
-                    const pattern = path.includes('/') || path.includes('\\') ? path : '**/' + path;
-                    return minimatch(relPath, pattern, minimatchOptions);
-                }) ? [{ configuration, ci }] : []);
+            if (matchingRuleData.length === 0) { return; }
 
-            if (applicableConfigurations.length === 0) { return; }
+            matchingRuleData.forEach(({ decorationType, regexes }) => {
+                const ranges: vscode.Range[] = [];
 
-            applicableConfigurations.forEach(({ configuration, ci }) =>
-                toArray(configuration.rules).forEach((rule, ri) => {
-                    const ranges: vscode.Range[] = [];
-
-                    for (const regExp of allCompiledPatterns[ci][ri]) {
-                        for (let line = 0; line < todoEditor.document.lineCount; line++) {
-                            for (const match of todoEditor.document.lineAt(line).text.matchAll(regExp)) {
-                                if (match.index === undefined || match[0].length === 0) { continue; }
-                                ranges.push(new vscode.Range(line, match.index, line, match.index + match[0].length));
-                            }
+                for (const regex of regexes) {
+                    for (let lineNum = 0; lineNum < editor.document.lineCount; lineNum++) {
+                        for (const match of editor.document.lineAt(lineNum).text.matchAll(regex)) {
+                            if (match.index === undefined || match[0].length === 0) { continue; }
+                            ranges.push(new vscode.Range(lineNum, match.index, lineNum, match.index + match[0].length));
                         }
                     }
+                }
 
-                    // We used to have rule-to-decoration-type map for selecting the decoration-type based on the
-                    // rule, but if the extension is installed from the package, it was found that the object
-                    // representing the same rule changes as user switches between documents, so the rule-object
-                    // could not be used as the key for the map.
-                    todoEditor.setDecorations(allDecorationTypes[ci][ri], ranges);
-                }));
+                editor.setDecorations(decorationType, ranges);
+            });
 
-            doneEditors.push(todoEditor);
+            doneEditors.push(editor);
         });
 
         todoEditors = [];
@@ -130,21 +144,24 @@ export function activate(context: vscode.ExtensionContext): void {
 
     vscode.window.onDidChangeVisibleTextEditors(
         visibleEditors => {
-            todoEditors = visibleEditors.filter(visibleEditor => !doneEditors.includes(visibleEditor));
-            doneEditors = doneEditors.filter(doneEditor => visibleEditors.includes(doneEditor));
+            // Queue newly visible editors; prune editors that were closed.
+            todoEditors = visibleEditors.filter(editor => !doneEditors.includes(editor));
+            doneEditors = doneEditors.filter(editor => visibleEditors.includes(editor));
+            updateDecorations();
         },
         null,
         context.subscriptions);
 
     vscode.workspace.onDidChangeTextDocument(
         event => {
+            // Re-queue any visible editor showing the changed document.
             vscode.window.visibleTextEditors.forEach(visibleEditor => {
                 if (visibleEditor.document === event.document && !todoEditors.includes(visibleEditor)) {
                     todoEditors.push(visibleEditor);
                 }
             });
 
-            doneEditors = doneEditors.filter(doneEditor => !todoEditors.includes(doneEditor));
+            doneEditors = doneEditors.filter(editor => !todoEditors.includes(editor));
         },
         null,
         context.subscriptions);

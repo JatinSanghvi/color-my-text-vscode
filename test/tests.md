@@ -56,6 +56,7 @@
 - Multiple Patterns - The quick brown fox jumps over the lazy dog.
 
 > In above,
+>
 > - Text `brown fox jumps` should be bold.
 > - Text `fox jumps over` should be striked out.
 > - Text `jumps over the` should be italicized.
@@ -65,6 +66,7 @@
 - Conflicting Patterns - The quick brown fox jumps over the lazy dog.
 
 > In above,
+>
 > - Text `brown fox jumps` should be cyan in color.
 > - Only text `over` should be green in color.
 > - Only text `the` should be magenta in color.

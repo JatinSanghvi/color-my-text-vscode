@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.9.0] - 2026-03-02
 
-- Add support for custom hex color codes (#RGB, #RRGGBB, #RRGGBBAA).
+- Add support for custom hex color codes.
 - Upgrade all dependencies.
 - Improve code quality and efficiency.
 

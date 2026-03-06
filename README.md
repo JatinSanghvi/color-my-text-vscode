@@ -6,19 +6,15 @@ Check out the extension on [Visual Studio Marketplace](https://marketplace.visua
 
 To see it in action, clone [this repository](https://github.com/JatinSanghvi/color-my-text-vscode) and open the `example` folder in Visual Studio Code. Install the 'Color My Text' extension when prompted.
 
+![demo](/images/demo.gif)
+
 ## Features
 
 ### Live Text Decorations
 
-![live-color](/images/live-color.gif)
-
-![live-style](/images/live-style.gif)
-
 Decorations apply as you type and update instantly when you change rules. You do not need to reopen files. Decorations work across multiple editor windows.
 
 **Tip:** Open the file to decorate on one side and the settings file on the other. Changes appear live, so you can quickly test patterns and try different styles.
-
-![quick-configuration](/images/quick-configuration.gif)
 
 ### Configuration
 
@@ -56,8 +52,6 @@ Set to `true` to allow patterns to match text across multiple lines. When enable
 
 #### Colors and Styles
 
-![theme-support](/images/theme-support.gif)
-
 #### `color`
 
 Accepts one of sixteen ANSI color names or a custom hex color code.
@@ -85,23 +79,21 @@ ANSI colors adapt to the active color theme, ensuring good contrast regardless o
 #### Notes
 
 - Each rule must specify at least one decoration property.
-- Decorations apply on top of the existing color theme. A rule that only sets `italic: true` will italicize text without changing its theme color.
+- Decorations apply on top of the existing color theme. For example, a rule that only sets `italic: true` will italicize text without changing its theme color.
 - A file can match multiple configurations. All matching configurations apply.
-- If text matches multiple rules, all decorations merge. For conflicting properties (such as `color`), the first matching rule wins.
+- If text matches multiple rules, all decorations merge. If the same decoration (such as `color`) is set in multiple maching rules, the first one wins.
 
-    ```json
-    "rules": [
-        { "patterns": ["brown fox jumps"], "bold": true },
-        { "patterns": ["fox jumps over"], "strikeThrough": true },
-        { "patterns": ["jumps over the"], "italic": true }
-    ]
-    ```
+```json
+"rules": [
+    { "patterns": ["brown fox jumps"], "bold": true },
+    { "patterns": ["fox jumps over"], "strikeThrough": true },
+    { "patterns": ["jumps over the"], "italic": true }
+]
+```
 
-    The text above produces: <pre>The quick <b>brown <strike>fox <i>jumps</b> over</strike> the</i> lazy dog.</pre>
+The text above produces: <pre>The quick <b>brown <strike>fox <i>jumps</b> over</strike> the</i> lazy dog.</pre>
 
 ### Share Decorations
-
-![share-decorations](/images/share-decorations.gif)
 
 Store decoration rules in the workspace settings file (`.vscode/settings.json`) alongside your files. When you share the files through a version control system, others can use and contribute to the decoration rules.
 

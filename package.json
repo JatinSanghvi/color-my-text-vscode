@@ -1,9 +1,9 @@
 {
   "name": "color-my-text",
-  "version": "1.10.0",
+  "version": "1.12.0",
   "publisher": "JatinSanghvi",
   "engines": {
-    "vscode": "^1.109.0"
+    "vscode": "^1.67.0"
   },
   "license": "MIT",
   "displayName": "Color My Text",
@@ -160,7 +160,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.0.0",
-    "@types/vscode": "^1.109.0",
+    "@types/vscode": "^1.67.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "@vscode/test-electron": "^2.5.2",

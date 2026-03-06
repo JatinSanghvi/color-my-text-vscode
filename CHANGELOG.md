@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-03-06
+
+- Consolidate Readme demo images.
+
 ## [1.10.0] - 2026-03-03
 
 - Revise README document.
